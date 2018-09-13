@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ p.Name }} /r/nfl draft card</title>
+        <style type="text/css">
+            html {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                margin: 0;
+                width: 300px;
+                height: 400px;
+                padding: 15px;
+            }
+            #card {
+                background-color: white;
+                width: 285px;
+                height: 385px;
+                box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.75);
+                font-family: sans-serif;
+                padding: 5px;
+            }
+            h1,h2,h3,h4,h5,h6 {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="card">
+            <h1>{{ p.Name }}</h1>
+            <h2>{{ p.POS|default('??') }}</h2>
+            <dl>
+                <dt>Weight</dt>
+                {% if p['Weight (lbs)'] %}
+                <dd>{{ p['Weight (lbs)']|int }} lbs</dd>
+                {% else %}
+                <dd><em>Unknown</em></dd>
+                {% endif %}
+                <dt>Height</dt>
+                {% if p.Height %}
+                <dd>{{ p.Height }}</dd>
+                {% else %}
+                <dd><em>Unknown</em></dd>
+                {% endif %}
+                <dt>40yd time</dt>
+                {% if p['40 Yard'] %}
+                <dd>{{ p['40 Yard']|float|round(2) }} sec</dd>
+                {% else %}
+                <dd><em>None</em></dd>
+                {% endif %}
+            </dl>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,7 @@
+<ul>
+    {% for player in players %}
+    <li><a href="{% url 'player-detail' pk=player.pk %}">{{ player.name }}</a></li>
+    {% empty %}
+    <li>No players yet.</li>
+    {% endfor %}
+</ul>

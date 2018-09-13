@@ -1,0 +1,22 @@
+{% extends "draftcardposter/base.html" %}
+{% block title %}Draft card postinator - preview{% endblock %}
+
+{% block content %}
+<h1>/r/NFL Draft card postinator</h1>
+<p class="lead" role="alert">Look closely before you hit that post button!</p>
+{% for kind, msg in msgs %}
+<div class="alert alert-{{ kind }}" role="alert">
+    {{ msg }}
+</div>
+{% endfor %}
+<form action="{% url 'submit-pick' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="title" value="{{ title }}" />
+    <input type="hidden" name="imageurl" value="{{ imageurl }}" />
+    <input type="hidden" name="overall" value="{{ overall }}" />
+    <button type="submit" class="btn btn-default">Submit to /r/{{ settings.subreddit }}!</button>
+</form>
+<hr />
+<h2>{{ title }}</h2>
+<img style="height: 400px" class="img-thumbnail" src="{{ imageurl }}" />
+{% endblock %}

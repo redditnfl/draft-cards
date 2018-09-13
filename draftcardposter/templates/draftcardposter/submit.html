@@ -1,0 +1,31 @@
+{% extends "draftcardposter/base.html" %}
+{% block title %}submitting{% endblock %}
+
+{% block content %}
+<h1>/r/NFL Draft card postinator</h1>
+<p class="lead">Posting draft card!</p>
+{% for kind, msg in msgs %}
+<div class="alert alert-{{ kind }}" role="alert">
+    {{ msg }}
+</div>
+{% endfor %}
+
+<dl class="dl-horizontal">
+{% if cardurl %}
+<dt>Local photo</dt>
+<dd><a href="{{ cardurl }}">{{ cardurl }}</a></dd>
+{% endif %}
+
+{% if imgururl %}
+<dt>Imgur</dt>
+<dd><a href="{{ imgururl }}">{{ imgururl }}</a></dd>
+{% endif %}
+
+{% if submission %}
+<dt>Reddit submission</dt>
+<dd><a href="{{ permalink }}">{{ submission.title }}</a></dd>
+{% endif %}
+</dl>
+
+<a role="button" class="btn btn-default" href="{% url 'index' %}">Submit another</a>
+{% endblock %}

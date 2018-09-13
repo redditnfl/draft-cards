@@ -1,0 +1,4 @@
+output/
+google_client_secret.json
+imgur_client_secret.json
+ghostdriver.log

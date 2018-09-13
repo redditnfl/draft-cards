@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ p.Name }} /r/nfl draft card</title>
+        <style type="text/css">
+            html {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                margin: 0;
+                width: 300px;
+                height: 400px;
+                padding: 15px;
+            }
+            #card {
+                background-color: white;
+                width: 285px;
+                height: 385px;
+                box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.75);
+                font-family: sans-serif;
+                padding: 5px;
+            }
+            h1,h2,h3,h4,h5,h6 {
+                margin: 0;
+                padding: 0;
+            }
+            h2 {
+                text-align: right;
+                color: darkgray;
+            }
+            img#pic {
+                height: 150px;
+                width: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="card">
+            <h1>{{ name }}</h1>
+            <h2>{{ position|default:'??' }}</h2>
+            <img src="{% static photo %}" id="pic" />
+            <dl>
+                <dt>Weight</dt>
+                {% if p.data.weight_lbs %}
+                <dd>{{ p.data.weight_lbs|floatformat:'0' }} lbs</dd>
+                {% else %}
+                <dd><em>Unknown</em></dd>
+                {% endif %}
+                <dt>Height</dt>
+                {% if p.data.height %}
+                <dd>{{ p.data.height }}</dd>
+                {% else %}
+                <dd><em>Unknown</em></dd>
+                {% endif %}
+                <dt>40yd time</dt>
+                {% if p.data.40_yard %}
+                <dd>{{ p.data.40_yard|floatformat:'2' }} sec</dd>
+                {% else %}
+                <dd><em>None</em></dd>
+                {% endif %}
+            </dl>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,735 @@
+/*
+@font-face {
+  font-family: "Lickety Split";
+  src: url(licketysplit.ttf); }
+*/
+@font-face {
+  font-family: "Hanken Sans ExtraBold";
+  src: url(hanken-extra-bold.otf); }
+/*
+@font-face {
+  font-family: "Hanken Sans Light";
+  src: url(hanken-light.otf); }
+*/
+html,
+body {
+  background: transparent;
+  margin: 0;
+  height: 820px;
+  width: 1260px;
+  overflow: hidden; }
+
+* {
+  box-sizing: border-box; }
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 780px;
+  float: left;
+  margin: 20px; }
+
+#front {
+  margin-right: 0; }
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  height: 716px;
+  width: 538px;
+  background: #333; }
+
+.masked {
+  -webkit-clip-path: url(#mask); }
+
+.logo {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 78px;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  fill: #fff;
+  z-index: 999; }
+
+.logo svg {
+  display: block;
+  height: 67px;
+  width: 78px;
+  fill: #fff; }
+
+.name-ctn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0 30px 0 0; }
+
+.name {
+  -webkit-font-smoothing: antialiased;
+  font-family: "Lickety Split";
+  line-height: 0;
+  color: #fff;
+  font-weight: 300;
+  -webkit-text-shadow: -5px 5px 0 #2195d4; }
+
+.name .first-name,
+.name .last-name {
+  display: block;
+  text-align: right;
+  white-space: nowrap; }
+.name .first-name.done,
+.name .last-name.done {
+  white-space: nowrap; }
+.name .first-name span,
+.name .last-name span {
+  display: inline; }
+.name .first-name::before,
+.name .last-name::before {
+  content: attr(data-name);
+  position: absolute;
+  transform: translate(-5px, -5px);
+  -webkit-transform: translate(-5px, -5px);
+  z-index: -1; }
+
+.first-name {
+  position: relative;
+  z-index: 9;
+  display: block;
+  font-size: 114px;
+  line-height: 20px;
+  letter-spacing: .01em;
+  transform: skewY(-12deg) skewX(12deg);
+  -webkit-transform: skewY(-12deg) skewX(12deg); }
+
+.last-name {
+  position: relative;
+  z-index: 9;
+  display: block;
+  margin-top: 50px;
+  margin-left: 20px;
+  margin-bottom: 90px;
+  font-size: 166px;
+  line-height: 1em;
+  transform: skewY(-12deg) skewX(12deg);
+  -webkit-transform: skewY(-12deg) skewX(12deg); }
+
+.pick-number {
+  position: absolute;
+  top: 29px;
+  right: 15px;
+  font-size: 40px;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Lickety Split";
+  line-height: 0;
+  color: #fff;
+  line-height: 0;
+  letter-spacing: .01em; }
+
+.team-logo {
+  display: block;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  height: 300px;
+  width: 75px;
+  z-index: 10;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: 75px; }
+
+#back .content {
+  padding: 20px;
+  background-image: url(draft-bg.jpg);
+  background-position: center;
+  background-size: cover;
+  -webkit-background-size: cover; }
+
+.best-value #back .content {
+  background-image: url(draft-bg-white.jpg);}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ccc; }
+
+.special,
+.irrelevant,
+.value {
+  display: none;
+  -webkit-font-smoothing: antialiased;
+  margin: 0 0 24px;
+  font-family: "Hanken Sans ExtraBold";
+  font-size: 20px;
+  line-height: 22px;
+  text-transform: uppercase;}
+
+.special{
+  letter-spacing: 2.45em;
+  color: #e9d87c;}
+.irrelevant {
+  letter-spacing: 1.425em;
+  white-space: nowrap;
+  color: #e9d87c;}
+.value{
+  letter-spacing: 2.125em;
+  white-space: nowrap;
+  color: #444;}
+
+.pick,
+.position,
+.stat-header,
+.small {
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  font-family: "Hanken Sans Light";
+  letter-spacing: .05em;
+  color: #757679;
+  font-size: 24px; }
+
+.pick,
+.stat-header,
+.small {
+  color: #757679; }
+
+.position {
+  color: #fff; }
+
+
+.best-value .position {
+  color: #444; }
+
+.back-name {
+  -webkit-font-smoothing: antialiased;
+  margin: 0 0 4px;
+  font-family: "Hanken Sans ExtraBold";
+  font-size: 70px;
+  letter-spacing: .05em;
+  line-height: 62px;
+  white-space: nowrap;
+  text-transform: uppercase; }
+
+.line-name {
+  display: block; }
+
+.bottom-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 20px 10px; }
+
+.stat-group .small {
+  vertical-align: middle; }
+
+.stat-header {
+  margin-bottom: 10px; }
+
+.stat-group {
+  display: block;
+  margin: 0 0 0px; }
+
+.stat-group .big {
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+  display: inline-block;
+  padding-bottom: 9px;
+  padding-right: 10px;
+  margin: 0 0 4px;
+  font-family: "Hanken Sans ExtraBold";
+  font-size: 60px;
+  letter-spacing: 0;
+  line-height: 60px;
+  text-transform: uppercase; }
+
+body.pick-cardinals #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, black 23%, black 29%, black 33%, #0d0d0d 61%, #333333 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-cardinals #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, black 23%, black 50%, #0d0d0d 61%, #262626 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-cardinals .first-name::before,
+body.pick-cardinals .last-name::before {
+  color: #97233f; }
+body.pick-cardinals .team-logo {
+  background-image: url("logos/cardinals_logo.png"); }
+body.pick-cardinals .line-name {
+  color: #97233f; }
+body.pick-cardinals .stat-group .big {
+  color: #97233f; }
+
+body.pick-falcons #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, black 23%, black 29%, black 33%, #0d0d0d 61%, #333333 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-falcons #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, black 23%, black 50%, #0d0d0d 61%, #262626 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-falcons .first-name::before,
+body.pick-falcons .last-name::before {
+  color: #a6192d; }
+body.pick-falcons .team-logo {
+  background-image: url("logos/falcons_logo.png"); }
+body.pick-falcons .line-name {
+  color: #a6192d; }
+body.pick-falcons .stat-group .big {
+  color: #a6192d; }
+
+body.pick-ravens #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, #100122 23%, black 29%, #040009 33%, #34046c 61%, #5707b5 66%, #310467 79%, #100122 95%, black 100%); }
+body.pick-ravens #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, #100122 23%, #040009 50%, #34046c 61%, #4c069d 66%, #310467 79%, #100122 95%, black 100%); }
+body.pick-ravens .first-name::before,
+body.pick-ravens .last-name::before {
+  color: #d0b240; }
+body.pick-ravens .team-logo {
+  background-image: url("logos/ravens_logo.png"); }
+body.pick-ravens .line-name {
+  color: #d0b240; }
+body.pick-ravens .stat-group .big {
+  color: #d0b240; }
+
+body.pick-bills #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #000713 0%, black 2%, #00215a 23%, #000e27 29%, #001741 33%, #003ca7 61%, #0058f3 66%, #003aa1 79%, #00215a 95%, #000e27 100%); }
+body.pick-bills #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #000713 0%, black 2%, #00215a 23%, #001741 50%, #003ca7 61%, #004fda 66%, #003aa1 79%, #00215a 95%, #000e27 100%); }
+body.pick-bills .first-name::before,
+body.pick-bills .last-name::before {
+  color: #c60c30; }
+body.pick-bills .team-logo {
+  background-image: url("logos/bills_logo.png"); }
+body.pick-bills .line-name {
+  color: #c60c30; }
+body.pick-bills .stat-group .big {
+  color: #c60c30; }
+
+body.pick-panthers #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, black 23%, black 29%, black 33%, #0d0d0d 61%, #333333 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-panthers #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, black 23%, black 50%, #0d0d0d 61%, #262626 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-panthers .first-name::before,
+body.pick-panthers .last-name::before {
+  color: #0088ce; }
+body.pick-panthers .team-logo {
+  background-image: url("logos/panthers_logo.png"); }
+body.pick-panthers .line-name {
+  color: #0088ce; }
+body.pick-panthers .stat-group .big {
+  color: #0088ce; }
+
+body.pick-bears #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, black 23%, black 29%, black 33%, #053047 61%, #09618f 66%, #042d42 79%, black 95%, black 100%); }
+body.pick-bears #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, black 23%, black 50%, #053047 61%, #085177 66%, #042d42 79%, black 95%, black 100%); }
+body.pick-bears .first-name::before,
+body.pick-bears .last-name::before {
+  color: #dd4814; }
+body.pick-bears .team-logo {
+  background-image: url("logos/bears_logo.png"); }
+body.pick-bears .line-name {
+  color: #dd4814; }
+body.pick-bears .stat-group .big {
+  color: #dd4814; }
+
+body.pick-bengals #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, black 23%, black 29%, black 33%, #0d0d0d 61%, #333333 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-bengals #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, black 23%, black 50%, #0d0d0d 61%, #262626 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-bengals .first-name::before,
+body.pick-bengals .last-name::before {
+  color: #FB4F14; }
+body.pick-bengals .team-logo {
+  background-image: url("logos/bengals_logo.png"); }
+body.pick-bengals .line-name {
+  color: #FB4F14; }
+body.pick-bengals .stat-group .big {
+  color: #FB4F14; }
+
+body.pick-browns #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #27190d 0%, #100a05 2%, #5c3b1f 23%, #362312 29%, #492f19 33%, #956032 61%, #c48650 66%, #915e31 79%, #5c3b1f 95%, #362312 100%); }
+body.pick-browns #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #27190d 0%, #100a05 2%, #5c3b1f 23%, #492f19 50%, #956032 61%, #bb793f 66%, #915e31 79%, #5c3b1f 95%, #362312 100%); }
+body.pick-browns .first-name::before,
+body.pick-browns .last-name::before {
+  color: #eb3300; }
+body.pick-browns .team-logo {
+  background-image: url("logos/browns_logo.png"); }
+body.pick-browns .line-name {
+  color: #eb3300; }
+body.pick-browns .stat-group .big {
+  color: #eb3300; }
+
+body.pick-cowboys #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #010103 0%, black 2%, #0b1f40 23%, #040a14 29%, #07142a 33%, #173f81 61%, #225ec2 66%, #163c7c 79%, #0b1f40 95%, #040a14 100%); }
+body.pick-cowboys #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #010103 0%, black 2%, #0b1f40 23%, #07142a 50%, #173f81 61%, #1f54ac 66%, #163c7c 79%, #0b1f40 95%, #040a14 100%); }
+body.pick-cowboys .first-name::before,
+body.pick-cowboys .last-name::before {
+  color: #B0B7BC; }
+body.pick-cowboys .team-logo {
+  background-image: url("logos/cowboys_logo.png"); }
+body.pick-cowboys .line-name {
+  color: #B0B7BC; }
+body.pick-cowboys .stat-group .big {
+  color: #B0B7BC; }
+
+body.pick-broncos #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #922702 0%, #741f02 2%, #d83a04 23%, #a62d03 29%, #bf3303 33%, #fb622d 61%, #fd9a78 66%, #fb5e28 79%, #d83a04 95%, #a62d03 100%); }
+body.pick-broncos #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #922702 0%, #741f02 2%, #d83a04 23%, #bf3303 50%, #fb622d 61%, #fc875f 66%, #fb5e28 79%, #d83a04 95%, #a62d03 100%); }
+body.pick-broncos .first-name::before,
+body.pick-broncos .last-name::before {
+  color: #fb4f14; }
+body.pick-broncos .team-logo {
+  background-image: url("logos/broncos_logo.png"); }
+body.pick-broncos .line-name {
+  color: #fb4f14; }
+body.pick-broncos .stat-group .big {
+  color: #fb4f14; }
+
+body.pick-lions #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #000b11 0%, black 2%, #003958 23%, #001825 29%, #00283f 33%, #006ba5 61%, #009cf1 66%, #00679f 79%, #003958 95%, #001825 100%); }
+body.pick-lions #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #000b11 0%, black 2%, #003958 23%, #00283f 50%, #006ba5 61%, #008cd8 66%, #00679f 79%, #003958 95%, #001825 100%); }
+body.pick-lions .first-name::before,
+body.pick-lions .last-name::before {
+  color: #c5c7cf; }
+body.pick-lions .team-logo {
+  background-image: url("logos/lions_logo.png"); }
+body.pick-lions .line-name {
+  color: #c5c7cf; }
+body.pick-lions .stat-group .big {
+  color: #c5c7cf; }
+body.pick-lions.best-value .line-name {
+  color: #005A8B; }
+body.pick-lions.best-value .stat-group .big {
+  color: #005A8B; }
+
+body.pick-packers #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #050807 0%, black 2%, #21332e 23%, #0d1412 29%, #172420 33%, #3f6158 61%, #5d9082 66%, #3d5e55 79%, #21332e 95%, #0d1412 100%); }
+body.pick-packers #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #050807 0%, black 2%, #21332e 23%, #172420 50%, #3f6158 61%, #538074 66%, #3d5e55 79%, #21332e 95%, #0d1412 100%); }
+body.pick-packers .first-name::before,
+body.pick-packers .last-name::before {
+  color: #FFB612; }
+body.pick-packers .team-logo {
+  background-image: url("logos/packers_logo.png"); }
+body.pick-packers .line-name {
+  color: #FFB612; }
+body.pick-packers .stat-group .big {
+  color: #FFB612; }
+
+body.pick-texans #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, #021e2f 23%, black 29%, #010e16 33%, #064d77 61%, #0a7bc0 66%, #064972 79%, #021e2f 95%, black 100%); }
+body.pick-texans #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, #021e2f 23%, #010e16 50%, #064d77 61%, #096ca8 66%, #064972 79%, #021e2f 95%, black 100%); }
+body.pick-texans .first-name::before,
+body.pick-texans .last-name::before {
+  color: #A71930; }
+body.pick-texans .team-logo {
+  background-image: url("logos/texans_logo.png"); }
+body.pick-texans .line-name {
+  color: #A71930; }
+body.pick-texans .stat-group .big {
+  color: #A71930; }
+
+body.pick-colts #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #081c2c 0%, #030b12 2%, #134268 23%, #0b263d 29%, #0f3452 33%, #1f6ba9 61%, #3992db 66%, #1e68a4 79%, #134268 95%, #0b263d 100%); }
+body.pick-colts #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #081c2c 0%, #030b12 2%, #134268 23%, #0f3452 50%, #1f6ba9 61%, #2786d4 66%, #1e68a4 79%, #134268 95%, #0b263d 100%); }
+body.pick-colts .first-name::before,
+body.pick-colts .last-name::before {
+  color: #1B5D93; }
+body.pick-colts .team-logo {
+  background-image: url("logos/colts_logo.png"); }
+body.pick-colts .line-name {
+  color: #1B5D93; }
+body.pick-colts .stat-group .big {
+  color: #1B5D93; }
+
+body.pick-jaguars #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, #003b45 23%, #000f12 29%, #00252c 33%, #007d92 61%, #00bfde 66%, #00798c 79%, #003b45 95%, #000f12 100%); }
+body.pick-jaguars #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, #003b45 23%, #00252c 50%, #007d92 61%, #00a9c5 66%, #00798c 79%, #003b45 95%, #000f12 100%); }
+body.pick-jaguars .first-name::before,
+body.pick-jaguars .last-name::before {
+  color: #d7a22a; }
+body.pick-jaguars .team-logo {
+  background-image: url("logos/jaguars_logo.png"); }
+body.pick-jaguars .line-name {
+  color: #d7a22a; }
+body.pick-jaguars .stat-group .big {
+  color: #d7a22a; }
+
+body.pick-chiefs #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #740c1c 0%, #590915 2%, #b5132c 23%, #870e21 29%, #9e1126 33%, #e92c49 61%, #f07184 66%, #e82745 79%, #b5132c 95%, #870e21 100%); }
+body.pick-chiefs #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #740c1c 0%, #590915 2%, #b5132c 23%, #9e1126 50%, #e92c49 61%, #ee5a70 66%, #e82745 79%, #b5132c 95%, #870e21 100%); }
+body.pick-chiefs .first-name::before,
+body.pick-chiefs .last-name::before {
+  color: #f2c800; }
+body.pick-chiefs .team-logo {
+  background-image: url("logos/chiefs_logo.png"); }
+body.pick-chiefs .line-name {
+  color: #f2c800; }
+body.pick-chiefs .stat-group .big {
+  color: #f2c800; }
+
+body.pick-dolphins #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #934707 0%, #763905 2%, #d7680a 23%, #a75007 29%, #bf5c09 33%, #f68f37 61%, #f9b881 66%, #f68c33 79%, #d7680a 95%, #a75007 100%); }
+body.pick-dolphins #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #934707 0%, #763905 2%, #d7680a 23%, #bf5c09 50%, #f68f37 61%, #f8aa68 66%, #f68c33 79%, #d7680a 95%, #a75007 100%); }
+body.pick-dolphins .first-name::before,
+body.pick-dolphins .last-name::before {
+  color: #008d97; }
+body.pick-dolphins .team-logo {
+  background-image: url("logos/dolphins_logo.png"); }
+body.pick-dolphins .line-name {
+  color: #008d97; }
+body.pick-dolphins .stat-group .big {
+  color: #008d97; }
+
+body.pick-vikings #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #1a0d27 0%, #0b0610 2%, #3e1f5d 23%, #251237 29%, #32194a 33%, #653296 61%, #8b51c4 66%, #623192 79%, #3e1f5d 95%, #251237 100%); }
+body.pick-vikings #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #1a0d27 0%, #0b0610 2%, #3e1f5d 23%, #32194a 50%, #653296 61%, #7e3fbc 66%, #623192 79%, #3e1f5d 95%, #251237 100%); }
+body.pick-vikings .first-name::before,
+body.pick-vikings .last-name::before {
+  color: #ffc72c; }
+body.pick-vikings .team-logo {
+  background-image: url("logos/vikings_logo.png"); }
+body.pick-vikings .line-name {
+  color: #ffc72c; }
+body.pick-vikings .stat-group .big {
+  color: #ffc72c; }
+
+body.pick-patriots #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, #061020 23%, black 29%, #02050b 33%, #113062 61%, #1c4fa3 66%, #102d5d 79%, #061020 95%, black 100%); }
+body.pick-patriots #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, #061020 23%, #02050b 50%, #113062 61%, #18458d 66%, #102d5d 79%, #061020 95%, black 100%); }
+body.pick-patriots .first-name::before,
+body.pick-patriots .last-name::before {
+  color: #c80815; }
+body.pick-patriots .team-logo {
+  background-image: url("logos/patriots_logo.png"); }
+body.pick-patriots .line-name {
+  color: #c80815; }
+body.pick-patriots .stat-group .big {
+  color: #c80815; }
+
+body.pick-saints #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, black 23%, black 29%, black 33%, #0d0d0d 61%, #333333 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-saints #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, black 23%, black 50%, #0d0d0d 61%, #262626 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-saints .first-name::before,
+body.pick-saints .last-name::before {
+  color: #d2b887; }
+body.pick-saints .team-logo {
+  background-image: url("logos/saints_logo.png"); }
+body.pick-saints .line-name {
+  color: #d2b887; }
+body.pick-saints .stat-group .big {
+  color: #d2b887; }
+
+body.pick-giants #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #50000a 0%, #310006 2%, #970013 23%, #64000d 29%, #7e0010 33%, #e4001d 61%, #ff314c 66%, #de001d 79%, #970013 95%, #64000d 100%); }
+body.pick-giants #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #50000a 0%, #310006 2%, #970013 23%, #7e0010 50%, #e4001d 61%, #ff1835 66%, #de001d 79%, #970013 95%, #64000d 100%); }
+body.pick-giants .first-name::before,
+body.pick-giants .last-name::before {
+  color: #0d5093; }
+body.pick-giants .team-logo {
+  background-image: url("logos/giants_logo.png"); }
+body.pick-giants .line-name {
+  color: #0d5093; }
+body.pick-giants .stat-group .big {
+  color: #0d5093; }
+
+body.pick-jets #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #070e0c 0%, black 2%, #1f3e35 23%, #0e1c18 29%, #172d26 33%, #397161 61%, #52a48c 66%, #376e5e 79%, #1f3e35 95%, #0e1c18 100%); }
+body.pick-jets #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #070e0c 0%, black 2%, #1f3e35 23%, #172d26 50%, #397161 61%, #4a937e 66%, #376e5e 79%, #1f3e35 95%, #0e1c18 100%); }
+body.pick-jets .first-name::before,
+body.pick-jets .last-name::before {
+  color: #306052; }
+body.pick-jets .team-logo {
+  background-image: url("logos/jets_logo.png"); }
+body.pick-jets .line-name {
+  color: #306052; }
+body.pick-jets .stat-group .big {
+  color: #306052; }
+
+body.pick-raiders #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #666f73 0%, #586063 2%, #8a9397 23%, #707a7e 29%, #7d878b 33%, #b3b8bb 61%, #dbdedf 66%, #b0b6b9 79%, #8a9397 95%, #707a7e 100%); }
+body.pick-raiders #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #666f73 0%, #586063 2%, #8a9397 23%, #7d878b 50%, #b3b8bb 61%, #ced1d3 66%, #b0b6b9 79%, #8a9397 95%, #707a7e 100%); }
+body.pick-raiders .first-name::before,
+body.pick-raiders .last-name::before {
+  color: #A5ACAF; }
+body.pick-raiders .team-logo {
+  background-image: url("logos/raiders_logo.png"); }
+body.pick-raiders .line-name {
+  color: #A5ACAF; }
+body.pick-raiders .stat-group .big {
+  color: #A5ACAF; }
+
+body.pick-eagles #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, #001115 23%, black 29%, black 33%, #005062 61%, #008fae 66%, #004c5c 79%, #001115 95%, black 100%); }
+body.pick-eagles #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, #001115 23%, black 50%, #005062 61%, #007a95 66%, #004c5c 79%, #001115 95%, black 100%); }
+body.pick-eagles .first-name::before,
+body.pick-eagles .last-name::before {
+  color: #A5ACAF; }
+body.pick-eagles .team-logo {
+  background-image: url("logos/eagles_logo.png"); }
+body.pick-eagles .line-name {
+  color: #A5ACAF; }
+body.pick-eagles .stat-group .big {
+  color: #A5ACAF; }
+
+body.pick-steelers #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, black 23%, black 29%, black 33%, #0d0d0d 61%, #333333 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-steelers #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, black 23%, black 50%, #0d0d0d 61%, #262626 66%, #0a0a0a 79%, black 95%, black 100%); }
+body.pick-steelers .first-name::before,
+body.pick-steelers .last-name::before {
+  color: #FFB612; }
+body.pick-steelers .team-logo {
+  background-image: url("logos/steelers_logo.png"); }
+body.pick-steelers .line-name {
+  color: #FFB612; }
+body.pick-steelers .stat-group .big {
+  color: #FFB612; }
+
+body.pick-chargers #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #002e54 0%, #001d35 2%, #00569b 23%, #003a68 29%, #004882 33%, #0080e8 61%, #35a5ff 66%, #007de2 79%, #00569b 95%, #003a68 100%); }
+body.pick-chargers #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #002e54 0%, #001d35 2%, #00569b 23%, #004882 50%, #0080e8 61%, #1c99ff 66%, #007de2 79%, #00569b 95%, #003a68 100%); }
+body.pick-chargers .first-name::before,
+body.pick-chargers .last-name::before {
+  color: #fcac21; }
+body.pick-chargers .team-logo {
+  background-image: url("logos/chargers_logo.png"); }
+body.pick-chargers .line-name {
+  color: #fcac21; }
+body.pick-chargers .stat-group .big {
+  color: #fcac21; }
+
+body.pick-fortyniners #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #470c12 0%, #2c080b 2%, #831721 23%, #580f16 29%, #6e131c 33%, #c52231 61%, #e15260 66%, #c02130 79%, #831721 95%, #580f16 100%); }
+body.pick-fortyniners #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #470c12 0%, #2c080b 2%, #831721 23%, #6e131c 50%, #c52231 61%, #de3c4c 66%, #c02130 79%, #831721 95%, #580f16 100%); }
+body.pick-fortyniners .first-name::before,
+body.pick-fortyniners .last-name::before {
+  color: #e6be8a; }
+body.pick-fortyniners .team-logo {
+  background-image: url("logos/fortyniners_logo.png"); }
+body.pick-fortyniners .line-name {
+  color: #e6be8a; }
+body.pick-fortyniners .stat-group .big {
+  color: #e6be8a; }
+
+body.pick-seahawks #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, #000911 23%, black 29%, black 33%, #002f5e 61%, #0055aa 66%, #002c58 79%, #000911 95%, black 100%); }
+body.pick-seahawks #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, #000911 23%, black 50%, #002f5e 61%, #004891 66%, #002c58 79%, #000911 95%, black 100%); }
+body.pick-seahawks .first-name::before,
+body.pick-seahawks .last-name::before {
+  color: #69be28; }
+body.pick-seahawks .team-logo {
+  background-image: url("logos/seahawks_logo.png"); }
+body.pick-seahawks .line-name {
+  color: #69be28; }
+body.pick-seahawks .stat-group .big {
+  color: #69be28; }
+
+body.pick-rams #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #060d13 0%, black 2%, #16324a 23%, #0a1823 29%, #102537 33%, #275a86 61%, #3882c1 66%, #265882 79%, #16324a 95%, #0a1823 100%); }
+body.pick-rams #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #060d13 0%, black 2%, #16324a 23%, #102537 50%, #275a86 61%, #3275ad 66%, #265882 79%, #16324a 95%, #0a1823 100%); }
+body.pick-rams .first-name::before,
+body.pick-rams .last-name::before {
+  color: #214d72; }
+body.pick-rams .team-logo {
+  background-image: url("logos/rams_logo.png"); }
+body.pick-rams .line-name {
+  color: #214d72; }
+body.pick-rams .stat-group .big {
+  color: #214d72; }
+
+body.pick-buccaneers #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #41382d 0%, #2f2820 2%, #6b5c4a 23%, #4d4235 29%, #5c4f40 33%, #98836a 61%, #b7a997 66%, #958067 79%, #6b5c4a 95%, #4d4235 100%); }
+body.pick-buccaneers #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #41382d 0%, #2f2820 2%, #6b5c4a 23%, #5c4f40 50%, #98836a 61%, #ac9c88 66%, #958067 79%, #6b5c4a 95%, #4d4235 100%); }
+body.pick-buccaneers .first-name::before,
+body.pick-buccaneers .last-name::before {
+  color: #d60a0b; }
+body.pick-buccaneers .team-logo {
+  background-image: url("logos/buccaneers_logo.png"); }
+body.pick-buccaneers .line-name {
+  color: #d60a0b; }
+body.pick-buccaneers .stat-group .big {
+  color: #d60a0b; }
+
+body.pick-titans #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, black 0%, black 2%, #061020 23%, black 29%, #02050b 33%, #113062 61%, #1c4fa3 66%, #102d5d 79%, #061020 95%, black 100%); }
+body.pick-titans #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, black 0%, black 2%, #061020 23%, #02050b 50%, #113062 61%, #18458d 66%, #102d5d 79%, #061020 95%, black 100%); }
+body.pick-titans .first-name::before,
+body.pick-titans .last-name::before {
+  color: #648fcc; }
+body.pick-titans .team-logo {
+  background-image: url("logos/titans_logo.png"); }
+body.pick-titans .line-name {
+  color: #648fcc; }
+body.pick-titans .stat-group .big {
+  color: #648fcc; }
+
+body.pick-redskins #front {
+  background-image: -webkit-repeating-linear-gradient(133deg, #200d12 0%, #0b0406 2%, #53222d 23%, #2f131a 29%, #411b23 33%, #89384b 61%, #b9556c 66%, #853749 79%, #53222d 95%, #2f131a 100%); }
+body.pick-redskins #back {
+  background-image: -webkit-repeating-linear-gradient(75deg, #200d12 0%, #0b0406 2%, #53222d 23%, #411b23 50%, #89384b 61%, #ad475f 66%, #853749 79%, #53222d 95%, #2f131a 100%); }
+body.pick-redskins .first-name::before,
+body.pick-redskins .last-name::before {
+  color: #ffb612; }
+body.pick-redskins .team-logo {
+  background-image: url("logos/redskins_logo.png"); }
+body.pick-redskins .line-name {
+  color: #ffb612; }
+body.pick-redskins .stat-group .big {
+  color: #ffb612; }
+
+body.gold .special {
+  display: block; }
+body.gold #front {
+  background-image: -webkit-repeating-linear-gradient(67deg, #472819 0%, #472819 2%, #d99e4c 23%, #a87b32 29%, #865c25 33%, #e2b566 61%, #efdf80 66%, #9f7c3c 79%, #2c1b14 95%, #2c1b14 100%); }
+body.gold #back {
+  background-image: -webkit-repeating-linear-gradient(143deg, #472819 0%, #472819 2%, #d99e4c 23%, #a87b32 29%, #865c25 33%, #e2b566 61%, #efdf80 66%, #9f7c3c 79%, #2c1b14 95%, #2c1b14 100%); }
+body.mr-irrelevant .irrelevant {
+  display: block;}
+body.best-value .value {
+  display: block;}
+.misprint-text{
+  display: none;
+}
+body.card-misprint .misprint-text{
+	display: block;
+	-webkit-font-smoothing: antialiased;
+	position: absolute;
+	top: 18px;
+	left: 120px;
+	transform: rotate(54deg);
+	-webkit-transform: rotate(54deg);
+	margin: 0;
+	width: 800px;
+	transform-origin: left top;
+	-webkit-transform-origin: left top;
+	opacity: .9;
+}
+body.card-misprint .misprint-text img{
+	display: block;
+	width: 100%;
+}
+
+/*# sourceMappingURL=styles.css.map */

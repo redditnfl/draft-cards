@@ -1,0 +1,302 @@
+$nfl-teams:
+	(name:cardinals, fg:#97233F),
+	(name:falcons, fg:#A71930),
+	(name:ravens, fg:#4e3aaf),
+	(name:bills, fg:#00338D),
+	(name:panthers, fg:#0085CA),
+	(name:bears, fg:#C83803),
+	(name:bengals, fg:#FB4F14),
+	(name:browns, fg:#FF3C00),
+	(name:cowboys, fg:#B0B7BC),
+	(name:broncos, fg:#FB4F14),
+	(name:lions, fg:#005A8B),
+	(name:packers, fg:#FFB612),
+	(name:texans, fg:#A71930),
+	(name:colts, fg:#1B5D93),
+	(name:jaguars, fg:#006778),
+	(name:chiefs, fg:#E31837),
+	(name:dolphins, fg:#008E97),
+	(name:vikings, fg:#6540A0),
+	(name:patriots, fg:#d0cfca),
+	(name:saints, fg:#9F8958),
+	(name:giants, fg:#0d5093),
+	(name:jets, fg:#306052),
+	(name:raiders, fg:#A5ACAF),
+	(name:eagles, fg:#A5ACAF),
+	(name:steelers, fg:#FFB612),
+	(name:chargers, fg:#0072ce),
+	(name:fortyniners, fg:#B3995D),
+	(name:seahawks, fg:#69BE28),
+	(name:rams, fg:#214d72),
+	(name:buccaneers, fg:#D50A0A),
+	(name:titans, fg:#4B92DB),
+	(name:redskins, fg:#FFB612);
+
+@font-face {
+	font-family: "lickety";
+	src: url(licketysplit.ttf);
+}
+@font-face {
+	font-family: "hanken-bold";
+	src: url(hanken-extra-bold.otf);
+}
+@font-face {
+	font-family: "hanken";
+	src: url(hanken-light.otf);
+}
+html,
+body{
+	background: transparent;
+	margin: 0;
+	height: 820px;
+	width: 1260px;
+	overflow: hidden;
+}
+*{
+	box-sizing: border-box;
+}
+.card{
+	position: relative;
+	width: 600px;
+	height: 780px;
+	float: left;
+	margin: 20px;
+}
+#front{
+	margin-right: 0;
+}
+.content{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform:translate(-50%, -50%);
+	-webkit-transform:translate(-50%, -50%);
+	height: 716px;
+	width: 538px;
+	background: #333;
+}
+.masked{
+  -webkit-clip-path: url(#mask);
+}
+.logo{
+	position: absolute;
+	top: 18px;
+	left: 50%;
+	width: 78px;
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	fill: #fff;
+	z-index: 999;
+}
+.logo svg{
+	display: block;
+	height: 67px;
+	width: 78px;
+	fill: #fff;
+}
+.name-ctn{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 0 30px 0 0;
+}
+.name{
+	-webkit-font-smoothing: antialiased;
+	font-family: "lickety";
+	line-height: 0;
+	color: #fff;
+	font-weight: 300;
+	-webkit-text-shadow: -5px 5px 0 #2195d4;
+}
+.name .first-name,
+.name .last-name{
+	&{
+		display: block;
+		text-align: right;
+		white-space: nowrap;
+	}
+	&.done{
+		white-space: nowrap;
+	}
+	span{
+		display: inline;
+	}
+	&::before{
+		content: attr(data-name);
+		position: absolute;
+		transform: translate(-5px, -5px);
+		-webkit-transform: translate(-5px, -5px);
+		z-index: -1;
+	}
+}
+.first-name{
+	position: relative;
+	z-index: 9;
+	display: block;
+	font-size: 114px;
+	line-height: 20px;
+	letter-spacing: .01em;
+	transform: skewY(-12deg) skewX(12deg);
+	-webkit-transform: skewY(-12deg) skewX(12deg);
+}
+.last-name{
+	position: relative;
+	z-index: 9;
+	display: block;
+	margin-top: -10px;
+	margin-left: 20px;
+	font-size:166px;
+	line-height: 202px;
+	transform: skewY(-12deg) skewX(12deg);
+	-webkit-transform: skewY(-12deg) skewX(12deg);
+}
+.pick-number{
+  position: absolute;
+  top: 29px;
+  right: 15px;
+  font-size: 40px;
+	-webkit-font-smoothing: antialiased;
+	font-family: "lickety";
+	line-height: 0;
+	color: #fff;
+	line-height: 0;
+	letter-spacing: .01em;
+}
+.team-logo{
+	display: block;
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+	height: 300px;
+	width: 75px;
+	background-position: bottom center;
+	background-repeat: no-repeat;
+	background-size: 75px;
+}
+#back .content{
+	padding: 20px;
+	background-image: url(draft-bg.jpg);
+	background-position: center;
+	background-size: 1400px;
+	-webkit-background-size: 1400px;
+}
+.background-image{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #ccc;
+}
+.special{
+	display: none;
+	-webkit-font-smoothing: antialiased;
+	margin: 0 0 24px;
+	font-family: "hanken-bold";
+	font-size: 20px;
+  letter-spacing: 2.45em;
+	line-height: 22px;
+	text-transform: uppercase;
+	color: #e9d87c;
+}
+.pick,
+.position,
+.stat-header,
+.small{
+	-webkit-font-smoothing: antialiased;
+	margin: 0;
+	font-family: "hanken";
+	letter-spacing: .05em;
+	color: #757679;
+	font-size: 24px;
+}
+.pick,
+.stat-header,
+.small{
+	color: #757679;
+}
+.position{
+	color: #fff;
+}
+.back-name{
+	-webkit-font-smoothing: antialiased;
+	margin: 0 0 4px;
+	font-family: "hanken-bold";
+	font-size: 70px;
+	letter-spacing: .05em;
+	line-height: 62px;
+	text-transform: uppercase;
+}
+.line-name{
+	display: block;
+}
+.bottom-content{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 0 20px 10px;
+}
+.stat-group .small{
+	vertical-align: middle;
+}
+.stat-header{
+	margin-bottom: 10px;
+}
+.stat-group{
+	display: block;
+	margin: 0 0 0px;
+}
+.stat-group .big{
+	-webkit-font-smoothing: antialiased;
+	vertical-align: middle;
+	display: inline-block;
+	padding-bottom: 9px;
+	padding-right: 10px;
+	margin: 0 0 4px;
+	font-family: "hanken-bold";
+	font-size: 60px;
+	letter-spacing: 0;
+	line-height: 60px;
+	text-transform: uppercase;
+}
+@each $team in $nfl-teams{
+	body.pick-#{map-get($team, "name")}{
+		$color: map-get($team, "fg");
+		#front{
+			background-image: -webkit-repeating-linear-gradient(133deg, darken($color, 24) 0%,darken($color, 30) 2%, darken($color, 10) 23%, darken($color, 20) 29%, darken($color, 15) 33%, lighten($color, 5) 61%, lighten($color, 20) 66%, lighten($color, 4) 79%, darken($color, 10) 95%, darken($color, 20) 100%);
+		}
+		#back{
+			background-image: -webkit-repeating-linear-gradient(75deg, darken($color, 24) 0%,darken($color, 30) 2%, darken($color, 10) 23%, darken($color, 15) 50%, lighten($color, 5) 61%, lighten($color, 15) 66%, lighten($color, 4) 79%, darken($color, 10) 95%, darken($color, 20) 100%);
+		}
+		.name{
+			//text-shadow: -5px 5px 0 $color;
+		}
+		.first-name::before,
+		.last-name::before{
+			color: $color;
+		}
+		.team-logo{
+			background-image: url("images/#{map-get($team, "name")}_logo.png")
+		}
+		.line-name{
+			color: $color;
+		}
+		.stat-group .big{
+			color: $color;
+		}
+	}
+}
+body.gold{
+	$color: #e4d277;
+	.special{
+		display: block;
+	}
+	#front{
+	  background-image: -webkit-repeating-linear-gradient(67deg, #472819 0%,#472819 2%, #d99e4c 23%, #a87b32 29%, #865c25 33%, #e2b566 61%, #efdf80 66%, #9f7c3c 79%, #2c1b14 95%, #2c1b14 100%);
+	}
+	#back{
+	  background-image: -webkit-repeating-linear-gradient(143deg, #472819 0%,#472819 2%, #d99e4c 23%, #a87b32 29%, #865c25 33%, #e2b566 61%, #efdf80 66%, #9f7c3c 79%, #2c1b14 95%, #2c1b14 100%);
+	}
+}

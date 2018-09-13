@@ -1,0 +1,22 @@
+{% extends "draftcardposter/base.html" %}
+{% block title %}Missing photos{% endblock %}
+
+{% block content %}
+<h1>/r/NFL Draft card postinator</h1>
+<p class="lead">These are the players missing a photo</p>
+{% if msg %}
+<div class="alert alert-success" role="alert">{{ msg }}</div>
+{% endif %}
+<table class="table table-hover table-condensed"><thead><th>Name</th><th>Position</th><th>College</th><th>Filename</th></thead>
+{% for player in players %}
+<tbody>
+    <tr>
+        <td>{{ player.name }}</td>
+        <td>{{ player.position }}</td>
+        <td>{{ player.college }}</td>
+        <td>{{ player.data.filename }}</td>
+    </tr>
+</tbody>
+{% endfor %}
+</table>
+{% endblock %}

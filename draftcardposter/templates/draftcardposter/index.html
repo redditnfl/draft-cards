@@ -1,0 +1,64 @@
+{% extends "draftcardposter/base.html" %}
+{% load static %}
+{% block title %}Front{% endblock %}
+
+{% block scripts %}
+<script src="{% static "draftcardposter/draftcardposter.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>/r/NFL Draft card postinator</h1>
+<p class="lead">Select pick, team and player - I'll do the rest</p>
+{% for kind, msg in msgs %}
+<div class="alert alert-{{ kind }}" role="alert">
+    {{ msg }}
+</div>
+{% endfor %}
+<div>
+<form method="POST" action="{% url 'preview-post' %}">
+    <input type="hidden" id="next-round" value="{{ next_pick.0 }}" disabled="disabled" />
+    <input type="hidden" id="next-pick" value="{{ next_pick.1 }}" disabled="disabled" />
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-xs-6">
+            Round <select name="round" id="round" class="selectpicker" data-width="fit" title="Round">
+            </select>
+            Pick <select name="pick" id="pick" class="selectpicker" data-width="fit" title="Pick">
+            </select>
+            Team <select name="team" id="team" class="selectpicker" data-width="fit" title="Team" data-live-search="true">
+                {% for short, team in teams %}
+                <option value="{{ short }}">{{ team.mascot }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="input-group">
+                <span class="input-group-addon" id="name-label">Player</span>
+                <input name="name" id="name" type="text" class="form-control" placeholder="Player" aria-describedby="name-label" />
+            </div>
+        </div>
+        <div class="col-xs-3">
+            Position <select name="position" id="position" class="selectpicker" data-width="fit">
+                {% for value, label in positions %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-xs-3">
+            <div class="input-group">
+                <span class="input-group-addon" id="college-label">College</span>
+                <input name="college" id="college" type="text" class="form-control" placeholder="College" aria-describedby="college-label" />
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <button type="submit" class="btn btn-default" aria-label="Preview" id="preview">
+                <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Preview
+            </button>
+        </div>
+    </div>
+</form>
+</div>
+
+{% endblock %}
