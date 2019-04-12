@@ -1,10 +1,11 @@
-from django import http
+# vim: set fileencoding=UTF-8 :
 # Copyright 2013 AJJ <http://stackoverflow.com/users/377917/ajj>
 # Copyright 2017 Jonas Häggqvist
 #
 # http://stackoverflow.com/a/16663809
 #
 # Licensed under cc by-sa 3.0
+from django import http
 
 
 class AJAXListMixin(object):

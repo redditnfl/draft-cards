@@ -10,10 +10,12 @@ Jinja2==2.9.6
 MarkupSafe==1.0
 oauth2client==4.0.0
 packaging==16.8
+pkg-resources==0.0.0
 praw==4.4.0
 prawcore==0.8.0
 pyasn1==0.2.3
 pyasn1-modules==0.0.8
+pyparsing==2.4.0
 pytz==2017.2
 requests==2.13.0
 rsa==3.4.2
