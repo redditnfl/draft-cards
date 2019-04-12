@@ -16,13 +16,13 @@ from django.views import generic, View
 
 from .models import Player, Settings, Priority
 from .ajaxmixin import AJAXListMixin, AJAXSingleObjectMixin
+from .sheets import GoogleSheetsData
+from .imgur import Imgur
+from .screenshot import Screenshot
 
-from draftcards.sheets import GoogleSheetsData
-from draftcards.render import Render
-from draftcards.imgur import Imgur
-from draftcards.screenshot import Screenshot
 from redditnfl.nfltools import nflteams
 from redditnfl.nfltools import draft
+
 from django.db import transaction
 from urllib.request import urlopen
 
