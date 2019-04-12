@@ -21,8 +21,8 @@ from draftcards.sheets import GoogleSheetsData
 from draftcards.render import Render
 from draftcards.imgur import Imgur
 from draftcards.screenshot import Screenshot
-import nflteams
-import draft
+from redditnfl.nfltools import nflteams
+from redditnfl.nfltools import draft
 from django.db import transaction
 from urllib.request import urlopen
 
