@@ -26,6 +26,7 @@ from redditnfl.nfltools import draft
 from django.db import transaction
 from urllib.request import urlopen
 
+
 def add_common_context(context):
     context['positions'] = Player.POSITIONS
     context['teams'] = sorted(nflteams.fullinfo.items(), key=lambda v: v[1]['fullname'])
@@ -52,7 +53,7 @@ class MissingPhotos(generic.TemplateView):
         context = super(MissingPhotos, self).get_context_data(*args, **kwargs)
         players = []
         for player in Player.objects.all():
-            photo = 'draftcardposter/top100-2018/playerimgs/' + player.data['filename'] + '.jpg'
+            photo = 'draftcardposter/' + Settings.objects.all()[0].layout + '/playerimgs/' + player.data['filename'] + '.jpg'
             if not finders.find(photo):
                 players.append(player)
         context['players'] = players
@@ -265,15 +266,16 @@ def subdivide_stats(data):
 class PlayerCard(View):
 
     def get(self, request, overall, team, pos, name, college, fmt, *args, **kwargs):
+        settings = Settings.objects.all()[0]
         if fmt == 'png':
-            sshot = Screenshot(840, 0) # Height expands automatically
+            sshot = Screenshot(0, 0) # Width + Height expands automatically
             url = reverse('player-card', kwargs={'overall':overall, 'team':team, 'pos':pos, 'name':name, 'college':college, 'fmt':'html'})
             fullurl = request.build_absolute_uri(url)
             png = cache.get(fullurl)
             if not png:
                 print("PNG not cached, regenerating")
                 png = sshot.sshot_url_to_png(fullurl, 5.0)
-                cache.set(fullurl, png, 300)
+                cache.set(fullurl, png, settings.cache_ttl)
             return HttpResponse(png, content_type="image/png")
         else:
             player = player_if_found(name, college)
@@ -299,12 +301,12 @@ class PlayerCard(View):
                     'misprint': misprint,
                     'priorities': Priority.objects.get(position=pos).merge_with(Priority.objects.get(position='Default')),
                     }
-            context['photo'] = 'draftcardposter/draft-2018/playerimgs/some_fucking_guy.jpg'
+            playerimgs = 'draftcardposter/' + settings.layout + '/playerimgs'
+            context['photo'] = playerimgs + '/missingno.jpg'
             if player and 'filename' in player.data:
-                photo = 'draftcardposter/top100-2018/playerimgs/' + player.data['filename'] + '.jpg'
+                photo = playerimgs + '/' + player.data['filename'] + '.jpg'
                 if finders.find(photo):
                     context['photo'] = photo
 
-            settings = Settings.objects.all()[0]
-            return render(request, 'draftcardposter/' + settings.layout, context=context)
+            return render(request, 'draftcardposter/layout/' + settings.layout + '.html', context=context)
 
