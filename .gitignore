@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+.idea
+praw.ini
+# Various output files
+*.csv
+collections/
