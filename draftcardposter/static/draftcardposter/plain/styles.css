@@ -1,0 +1,14 @@
+html {
+    width: 600px;
+    height: auto;
+    background-color: #666;
+    color: #222;
+    font: 18px sans-serif;
+}
+body {
+    padding: 10px;
+    background-color: #eee;
+}
+img {
+    width: 100%;
+}

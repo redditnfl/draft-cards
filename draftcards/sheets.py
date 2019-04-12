@@ -23,12 +23,13 @@ class GoogleSheetsData:
 
     def __init__(self, sheet_id, parseargs=True):
         self.sheet_id = sheet_id
+        self.flags = None
         if parseargs:
             try:
                 import argparse
                 self.flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
             except ImportError:
-                self.flags = None
+                pass
 
 
     def get_credentials(self):
@@ -86,7 +87,9 @@ class GoogleSheetsData:
 if __name__ == '__main__':
     from pprint import pprint
     import sys
-    sheet_id, range_def = sys.argv[1:2]
+    pprint(sys.argv)
+    sheet_id = sys.argv.pop(1)
+    range_def = sys.argv.pop(1)
     gs = GoogleSheetsData(sheet_id)
     pprint(gs.get_range_dict(range_def))
 

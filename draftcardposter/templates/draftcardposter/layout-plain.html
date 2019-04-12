@@ -1,0 +1,28 @@
+{% load static %}
+{% load draftcard_extras %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static "draftcardposter/plain/styles.css" %}">
+        <title>/r/nfl 2019 Draft Card - {{ firstname }} {{ lastname }}</title>
+        <style>
+        </style>
+    </head>
+    <body class="{{ team|teamcssclass }}" data-overall="{{ overall }}">
+        <h1>#{{ overall}} {{ firstname }} {{ lastname }}</h1>
+        <h2>{{ team.fullname }}</h2>
+        <img src="{% static photo %}" />
+
+        <div>{{ position }} &mdash; {{ college }}</div>
+        <div>Round {{ round }}, pick {{ pick }}</div>
+        <div>{{ stats.height_in|formatvalue:'height_in' }} &mdash; {{ stats.weight_lbs|formatvalue:'weight_lbs' }}</div>
+
+        <dl>
+            {% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}
+            <dt>{{ stat|statname:value }}{% if type_ %} - {{ type_ }}{% endif %}</dt>
+            <dd>{{ value|formatvalue:stat }}</dd>
+            {% endfor %}
+        </dl>
+    </body>
+</html>
