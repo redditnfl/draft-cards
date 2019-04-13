@@ -27,6 +27,8 @@ from django.db import transaction
 from urllib.request import urlopen
 
 
+sshot = Screenshot(0, 0) # Width + Height expands automatically
+
 def add_common_context(context):
     context['positions'] = Player.POSITIONS
     context['teams'] = sorted(nflteams.fullinfo.items(), key=lambda v: v[1]['fullname'])
@@ -268,7 +270,6 @@ class PlayerCard(View):
     def get(self, request, overall, team, pos, name, college, fmt, *args, **kwargs):
         settings = Settings.objects.all()[0]
         if fmt == 'png':
-            sshot = Screenshot(0, 0) # Width + Height expands automatically
             url = reverse('player-card', kwargs={'overall':overall, 'team':team, 'pos':pos, 'name':name, 'college':college, 'fmt':'html'})
             fullurl = request.build_absolute_uri(url)
             png = cache.get(fullurl)

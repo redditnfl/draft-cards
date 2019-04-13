@@ -9,14 +9,12 @@ class Screenshot:
     def __init__(self, w, h):
         self.w = w
         self.h = h
-
-    def start(self):
         self.vdisplay = Xvfb()
         self.vdisplay.start()
         self.driver = webdriver.PhantomJS()
         self.driver.set_window_size(self.w, self.h)
 
-    def stop(self):
+    def __del__(self):
         self.vdisplay.stop()
 
     def sshot(self, fn, outfn):
@@ -29,11 +27,9 @@ class Screenshot:
         self.stop()
 
     def sshot_url_to_png(self, url, sleep_seconds=0.0):
-        self.start()
         self.driver.get(url)
         sleep(sleep_seconds)
         png = self.driver.get_screenshot_as_png()
-        self.stop()
         return png
 
 if __name__ == "__main__":
