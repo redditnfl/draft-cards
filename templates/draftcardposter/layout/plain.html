@@ -2,7 +2,7 @@
 {% load draftcard_extras %}
 <!DOCTYPE html>
 
-<html>
+<html class="{{ team|teamcssclass }}">
     <head>
         <link rel="stylesheet" href="{% static "draftcardposter/plain/styles.css" %}">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -14,11 +14,13 @@
         <h1>#{{ overall}} {{ firstname }} {{ lastname }}</h1>
         <h2>{{ team.fullname }}</h2>
         <img src="{% static photo %}" />
+        <div id="some">
+            {% if p.data.twitter %}<div><i class="fab fa-twitter fa-fw" style="color: #00aced"></i> {{ p.data.twitter }}</div>{% endif %}
+            {% if p.data.instagram %}<div><i class="fab fa-instagram fa-fw" style="color: #f00075"></i> {{ p.data.instagram }}</div>{% endif %}
+        </div>
 
-        <div>{{ position }} &mdash; {{ college }}</div>
-        <div>Round {{ round }}, pick {{ pick }}</div>
+        <div>{{ position }} &mdash; {{ college }} ({{ round }}.{{ pick }})</div>
         <div>{{ stats.height_in|formatvalue:'height_in' }} &mdash; {{ stats.weight_lbs|formatvalue:'weight_lbs' }}</div>
-        {% if p.data.twitter %}<div><i class="fab fa-twitter" style="color: #00aced"></i>@{{ p.data.twitter }}</div>{% endif %}
 
         <dl>
             {% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}

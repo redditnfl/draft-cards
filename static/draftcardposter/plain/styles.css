@@ -1,14 +1,25 @@
 html {
     width: 600px;
     height: auto;
-    background-color: #666;
-    color: #222;
-    font: 18px sans-serif;
+    background: linear-gradient(45deg, #777 0%,#222 50%,#222 51%,#777 100%);
+    margin: 0;
+    padding: 0;
 }
 body {
     padding: 10px;
-    background-color: #eee;
+    margin: 15px;
+    background-image: url('shield_logo_field.jpg');
+    background-size: cover;
+    color: #eee;
+    font: 18px sans-serif;
 }
 img {
-    width: 100%;
+    width: 570px;
+    margin-left: -10px;
+}
+i.fab {
+    margin: 3px;
+}
+#some {
+    float: right;
 }
