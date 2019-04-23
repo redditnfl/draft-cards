@@ -3,20 +3,36 @@
 
 {% block content %}
 <h1>/r/NFL Draft card postinator</h1>
-<p class="lead">These are the players missing a photo</p>
+<p class="lead">Th{{ missing|length|pluralize:"is,ese" }} {{ missing|length }} player{{ missing|length|pluralize }} missing a photo</p>
 {% if msg %}
 <div class="alert alert-success" role="alert">{{ msg }}</div>
 {% endif %}
-<table class="table table-hover table-condensed"><thead><th>Name</th><th>Position</th><th>College</th><th>Filename</th></thead>
-{% for player in players %}
+<table class="table table-hover table-condensed"><thead><th>Name</th><th>Position</th><th>College</th><th>Filename</th><th>Buzz</th></thead>
+{% for player in missing %}
 <tbody>
     <tr>
         <td>{{ player.name }}</td>
         <td>{{ player.position }}</td>
         <td>{{ player.college }}</td>
         <td>{{ player.data.filename }}</td>
+        <td>{{ player.data.buzzscore }}</td>
     </tr>
 </tbody>
 {% endfor %}
 </table>
+
+{% if surplus %}
+<p class="lead">The following file{{ surplus|length|pluralize }} {{ surplus|length|pluralize:"is,are" }} not used by a player</p>
+
+<table class="table table-hover table-condensed"><thead><th>Filename</th></thead>
+{% for f in surplus %}
+<tbody>
+    <tr>
+        <td>{{ f.name }}</td>
+    </tr>
+</tbody>
+{% endfor %}
+</table>
+{% endif %}
+
 {% endblock %}

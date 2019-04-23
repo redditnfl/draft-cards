@@ -1,3 +1,6 @@
+import glob
+from pathlib import Path
+
 from django.shortcuts import render, redirect
 import traceback
 from django.contrib.staticfiles import finders
@@ -53,13 +56,25 @@ class MissingPhotos(generic.TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(MissingPhotos, self).get_context_data(*args, **kwargs)
-        players = []
-        for player in Player.objects.all():
+        missing = []
+        all_imgs = set()
+        for player in Player.objects.all().order_by('name'):
+            all_imgs.add(player.data['filename'])
+            if player.data.get('buzzscore', '0') == '0':
+                continue
             photo = 'draftcardposter/' + Settings.objects.all()[0].layout + '/playerimgs/' + player.data['filename'] + '.jpg'
             if not finders.find(photo):
-                players.append(player)
-        context['players'] = players
-        return add_common_context(context);
+                missing.append(player)
+        context['missing'] = missing
+
+        surplus = []
+        for basedir in map(Path, finders.searched_locations):
+            d = basedir / 'draftcardposter' / Settings.objects.all()[0].layout / 'playerimgs'
+            for f in map(Path, glob.glob("%s/*.jpg" % d)):
+                if f.stem not in all_imgs:
+                    surplus.append(f)
+        context['surplus'] = surplus
+        return add_common_context(context)
 
 
 
