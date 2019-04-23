@@ -93,7 +93,7 @@ praw.ini
 # Various output files
 *.csv
 output/
-playerimgs/
+playerimgs
 logos/
 
 google_client_secret.json
