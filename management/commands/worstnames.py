@@ -1,8 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from draftcardposter.models import Player
 from django.urls import reverse
-import nflteams
-import random
 
 class Command(BaseCommand):
 
