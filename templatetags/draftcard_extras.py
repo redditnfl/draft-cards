@@ -1,3 +1,4 @@
+import random
 from django import template
 from django.template.defaultfilters import stringfilter
 
@@ -5,7 +6,6 @@ register = template.Library()
 
 @register.filter
 def order_stats(stats, priorities):
-    from pprint import pprint
     items = list(stats.items())
     prio = priorities.as_list()
     def sorter(item):
@@ -116,6 +116,8 @@ def formatvalue(value, statname):
 
 @register.filter
 def in_to_ft_in(value):
+    if not value:
+        return '?\'?"'
     feet, inches = divmod(int(value), 12)
     return '{0}\'{1}"'.format(feet, inches)
 
@@ -183,6 +185,14 @@ def ordinal_suffix(n):
     return ('st','nd','rd')[n%10-1]
   else:
     return 'th'
+
+@register.simple_tag
+def random_int(min=0, max=10):
+    """
+    Create a random integer with given min and max
+    """
+    return random.randint(min, max)
+
 
 if __name__ == "__main__":
     import doctest

@@ -1,5 +1,8 @@
 {% load static %}
 {% load draftcard_extras %}
+{% load distance_filters %}
+{% with team_location=team|team_location closest_team=p.data|closest_team %}
+{% with team_distance=team_location|distance:p.data %}
 <!DOCTYPE html>
 
 <html class="{{ team|teamcssclass }}">
@@ -17,6 +20,7 @@
         <div id="some">
             {% if p.data.twitter %}<div><i class="fab fa-twitter fa-fw" style="color: #00aced"></i> {{ p.data.twitter }}</div>{% endif %}
             {% if p.data.instagram %}<div><i class="fab fa-instagram fa-fw" style="color: #f00075"></i> {{ p.data.instagram }}</div>{% endif %}
+            {% if p.data.reddit %}<div><i class="fab fa-reddit-alien fa-fw" style="color: orangered"></i> {{ p.data.reddit }}</div>{% endif %}
         </div>
 
         <div>{{ position }} &mdash; {{ college }} ({{ round }}.{{ pick }})</div>
@@ -28,5 +32,12 @@
             <dd>{{ value|formatvalue:stat }}</dd>
             {% endfor %}
         </dl>
+
+        <div>
+            {% if team.short == closest_team.short %}Player is drafted to his closest team{% else %}Player is not drafted to his closest team ({{ closest_team.fullname }}){% endif %}
+        </div>
+        {% if team.short == closest_team.short and team_distance.miles < 50 %}<div>Hometown alert - grew up {{ team_distance.miles|floatformat:0 }} miles from stadium</div>{% endif %}
     </body>
 </html>
+{% endwith %}
+{% endwith %}
