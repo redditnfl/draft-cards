@@ -23,6 +23,7 @@ from .ajaxmixin import AJAXListMixin, AJAXSingleObjectMixin
 from .sheets import GoogleSheetsData
 from .imgur import Imgur
 from .screenshot import Screenshot
+from .tweet import Tweeter
 
 from redditnfl.nfltools import nflteams
 from redditnfl.nfltools import draft
@@ -104,7 +105,7 @@ class Picks(View):
             raise http.Http400("This is an ajax view, friend.")
         data = {
                 'current_year': settings.draft_year,
-                'next_pick': 36,
+                'next_pick': draft.round_pick(settings.draft_year, min(256, Settings.objects.all()[0].last_submitted_overall + 1)),
                 'picks': draft.drafts
                 }
         return http.JsonResponse(data)
@@ -152,30 +153,61 @@ def player_if_found(name, college):
     if len(players) == 1:
         return players[0]
 
+
+def render_template(type_, context):
+    s = Settings.objects.all()[0]
+    return render_to_string('draftcardposter/layout/' + getattr(s, type_ + "_template"), context).strip()
+
+
 @method_decorator(login_required, name='dispatch')
 class SubmitView(View):
     def post(self, request, *args, **kwargs):
         s = Settings.objects.all()[0]
         context = add_common_context({})
-        title = request.POST.get('title', None)
         url = request.POST.get('imageurl', None)
         overall = request.POST.get('overall', None)
+        name = request.POST.get('name', None)
+        college = request.POST.get('college', None)
+        position = request.POST.get('position', None)
+        team = nflteams.fullinfo[request.POST.get('team', None)]
 
-        if not title or not url or not overall:
+        if not url or not overall or not team or not name or not college or not position:
             raise Exception("AAAAAAAAA")
 
         context['cardurl'] = url
+        context['player'] = player_if_found(name, college)
+        context['name'] = name
+        context['college'] = college
+        context['position'] = position
+        context['team'] = team
+        context['overall'] = int(overall)
+        context['round'], context['pick'] = draft.round_pick(s.draft_year, int(overall))
+
+
         try:
-            ret = self.upload_to_imgur(s.imguralbum, title, url)
+            imgur_title = render_template("imgur", context)
+            ret = self.upload_to_imgur(s.imguralbum, imgur_title, url)
+            context['imgurtitle'] = imgur_title
             context['imgururl'] = ret['link']
+
             permalink = None
             if s.posting_enabled:
-                submission = self.submit_img_to_reddit(s.subreddit, title, context['imgururl'])
-                context['submission'] = submission
+                submission = self.submit_img_to_reddit(s.subreddit, render_template("reddit_title", context), context['imgururl'])
                 permalink = submission._reddit.config.reddit_url + submission.permalink
+                context['submission'] = submission
                 context['permalink'] = permalink
+
             if s.live_thread_id and permalink is not None:
-                live_thread = self.post_to_live_thread(s.live_thread_id, context['permalink'])
+                reddit_live_msg = render_template("reddit_live", context)
+                reddit_live_thread = self.post_to_live_thread(reddit_live_msg, context['permalink'])
+                context['reddit_live_msg'] = reddit_live_msg
+                context['reddit_live_thread'] = reddit_live_thread
+
+            tweet = render_template("tweet", context)
+            if tweet and len(tweet.strip()) > 0:
+                tweeturl = self.submit_twitter(tweet, get_and_cache_sshot(url))
+                context['tweet'] = tweet
+                context['tweeturl'] = tweeturl
         except Exception as e:
             context['msgs'].append(('danger', str(e)))
             context['msgs'].append(('danger', traceback.format_exc()))
@@ -197,6 +229,13 @@ class SubmitView(View):
         r = Reddit('draftcardposter')
         live_thread = r.live(live_thread_id)
         live_thread.contrib.add(body)
+        return live_thread
+
+    def submit_twitter(self, status, imagedata):
+        t = Tweeter()
+        print("Tweeting: " + status)
+        resp = t.tweet(status, imagedata)
+        return "https://twitter.com/statuses/%s" % resp['id_str']
 
 @method_decorator(login_required, name='dispatch')
 class PreviewPost(View):
@@ -222,8 +261,8 @@ class PreviewPost(View):
         context['overall'] = overall
         context['permalink'] = 'https://reddit.com/r/'+settings.subreddit+'/comments/_____/'
 
-        for x in ('tweet', 'reddit_live', 'reddit_title', 'imgur'):
-            context[x] = render_to_string('draftcardposter/layout/' + getattr(settings, x + "_template"), context).strip()
+        for type_ in ('tweet', 'reddit_live', 'reddit_title', 'imgur'):
+            context[type_] = render_template(type_, context)
 
         pick_type = draft.pick_type(settings.draft_year, int(context['round']), int(context['pick']))
         if pick_type and pick_type in (draft.FORFEITED, draft.UNKNOWN, draft.MOVED):
@@ -282,6 +321,16 @@ def subdivide_stats(data):
             ret[key] = value
     return ret
 
+
+def get_and_cache_sshot(fullurl):
+    settings = Settings.objects.all()[0]
+    png = cache.get(fullurl)
+    if not png:
+        print("PNG not cached, regenerating")
+        png = sshot.sshot_url_to_png(fullurl, 5.0)
+        cache.set(fullurl, png, settings.cache_ttl)
+    return png
+
 class PlayerCard(View):
 
     def get(self, request, overall, team, pos, name, college, fmt, *args, **kwargs):
@@ -289,11 +338,7 @@ class PlayerCard(View):
         if fmt == 'png':
             url = reverse('player-card', kwargs={'overall':overall, 'team':team, 'pos':pos, 'name':name, 'college':college, 'fmt':'html'})
             fullurl = request.build_absolute_uri(url)
-            png = cache.get(fullurl)
-            if not png:
-                print("PNG not cached, regenerating")
-                png = sshot.sshot_url_to_png(fullurl, 5.0)
-                cache.set(fullurl, png, settings.cache_ttl)
+            png = get_and_cache_sshot(fullurl)
             return HttpResponse(png, content_type="image/png")
         else:
             player = player_if_found(name, college)

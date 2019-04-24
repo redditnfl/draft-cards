@@ -17,13 +17,25 @@
 {% endif %}
 
 {% if imgururl %}
-<dt>Imgur</dt>
+<dt>Imgur url</dt>
 <dd><a href="{{ imgururl }}">{{ imgururl }}</a></dd>
+<dt>Imgur title</dt>
+<dd>{{ imgurtitle }}</dd>
 {% endif %}
 
 {% if submission %}
 <dt>Reddit submission</dt>
 <dd><a href="{{ permalink }}">{{ submission.title }}</a></dd>
+{% endif %}
+
+{% if reddit_live_msg %}
+<dt>Reddit live</dt>
+<dd><a href="{{ reddit_live_thread.permalink }}">{{ reddit_live_msg }}</a></dd>
+{% endif %}
+
+{% if tweet %}
+<dt>Tweet</dt>
+<dd><a href="{{ tweeturl }}">{{ tweet }}</a></dd>
 {% endif %}
 </dl>
 

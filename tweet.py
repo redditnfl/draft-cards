@@ -22,15 +22,16 @@ class Tweeter:
         oauth_token, oauth_secret = twitter.read_token_file(credentials_file)
         self.auth = twitter.OAuth(oauth_token, oauth_secret, client_secret['consumer_key'],
                                   client_secret['consumer_secret'])
-        self.api = twitter.Twitter(auth=self.auth, retry=True)
+        self.api = twitter.Twitter(auth=self.auth, retry=20)
         self.upload = twitter.Twitter(domain='upload.twitter.com', auth=self.auth, retry=True)
 
-    def tweet(self, status: str, imagedata: bytes = None) -> None:
+    def tweet(self, status: str, imagedata: bytes = None) -> dict:
         image_ids = []
         if imagedata is not None:
             image = self.upload.media.upload(media=imagedata)
             image_ids.append(image["media_id_string"])
-        self.api.statuses.update(status=status, media_ids=",".join(image_ids))
+            # self.upload.media.metadata.create(media_id=image["media_id_string"], text="metadata")
+        return self.api.statuses.update(status=status, media_ids=",".join(image_ids))
 
 
 if __name__ == '__main__':

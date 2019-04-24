@@ -13,7 +13,11 @@
     {% csrf_token %}
     <input type="hidden" name="imageurl" value="{{ imageurl }}" />
     <input type="hidden" name="overall" value="{{ overall }}" />
-    <button type="submit" class="btn btn-default" disabled=disabled>Submit to /r/{{ settings.subreddit }}!</button>
+    <input type="hidden" name="team" value="{{ team.short }}" />
+    <input type="hidden" name="position" value="{{ position }}" />
+    <input type="hidden" name="college" value="{{ college }}" />
+    <input type="hidden" name="name" value="{{ name }}" />
+    <button type="submit" class="btn btn-default">Submit to /r/{{ settings.subreddit }}!</button>
 </form>
 <hr />
 <h2>{{ reddit_title }}</h2>
