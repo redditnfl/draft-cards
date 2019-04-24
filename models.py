@@ -70,6 +70,10 @@ class Settings(models.Model):
     layout = models.CharField(max_length=100, default='plain')
     last_submitted_overall = models.IntegerField(default=0)
     cache_ttl = models.IntegerField(default=0)
+    tweet_template = models.CharField(max_length=200, default='tweet')
+    reddit_live_template = models.CharField(max_length=200, default='reddit_live.md')
+    reddit_title_template = models.CharField(max_length=200, default='reddit_title')
+    imgur_template = models.CharField(max_length=200, default='imgur')
 
 
 class Priority(models.Model):

@@ -2,6 +2,7 @@ import glob
 from pathlib import Path
 
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 import traceback
 from django.contrib.staticfiles import finders
 from praw import Reddit
@@ -200,6 +201,7 @@ class SubmitView(View):
 class PreviewPost(View):
 
     def post(self, request, *args, **kwargs):
+        settings = Settings.objects.all()[0]
         context = add_common_context({})
         for k in ('name', 'college', 'position', 'round', 'pick', 'team'):
             if k not in request.POST or not request.POST[k]:
@@ -217,11 +219,10 @@ class PreviewPost(View):
         if overall is None:
             raise Exception("Pick {round}.{pick} does not exist".format(**context))
         context['overall'] = overall
+        context['permalink'] = 'https://reddit.com/r/'+settings.subreddit+'/comments/_____/'
 
-        title = "Round {round} - Pick {pick}: {name}, {position}, {college} ({team[fullname]})".format(
-                **context
-                )
-        context['title'] = title
+        for x in ('tweet', 'reddit_live', 'reddit_title', 'imgur'):
+            context[x] = render_to_string('draftcardposter/layout/' + getattr(settings, x + "_template"), context).strip()
 
         pick_type = draft.pick_type(2018, int(context['round']), int(context['pick']))
         if pick_type and pick_type in (draft.FORFEITED, draft.UNKNOWN, draft.MOVED):
