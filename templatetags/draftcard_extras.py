@@ -5,6 +5,10 @@ from django.template.defaultfilters import stringfilter
 register = template.Library()
 
 @register.filter
+def halftone(filename):
+    return filename.replace('playerimgs/', 'playerimgs/halftone/')
+
+@register.filter
 def order_stats(stats, priorities):
     items = list(stats.items())
     prio = priorities.as_list()

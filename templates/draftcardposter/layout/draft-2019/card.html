@@ -10,7 +10,7 @@
       {% if hometown %}
       <div class="paper-name"><img src="{% static 'draftcardposter/draft-2019/assets/images/paper-title.png' %}"/></div>
       <div class="photo">
-          <div class="photo-contain JS-player-image" style="background-image: url(https://i.imgur.com/Ik80sUw.jpg);"></div>
+          <div class="photo-contain JS-player-image" style="background-image: url({% static photo|halftone %});" title="{{ photo }}"></div>
           <div class="credit">r/NFL</div>
           <div class="logo"></div>
       </div>
