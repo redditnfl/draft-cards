@@ -259,6 +259,7 @@ class PreviewPost(View):
         if overall is None:
             raise Exception("Pick {round}.{pick} does not exist".format(**context))
         context['overall'] = overall
+        context['round'], context['pick'] = draft.round_pick(settings.draft_year, int(overall))
         context['permalink'] = 'https://reddit.com/r/'+settings.subreddit+'/comments/_____/'
 
         for type_ in ('tweet', 'reddit_live', 'reddit_title', 'imgur'):
