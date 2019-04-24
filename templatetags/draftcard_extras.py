@@ -1,5 +1,7 @@
+from fractions import Fraction
 import random
 from django import template
+import math
 from django.template.defaultfilters import stringfilter
 
 register = template.Library()
@@ -105,16 +107,59 @@ def statname(statname, value):
             statname = statname.replace("Fumbles", "Fumble")
     return statname
 
+
+def fractionize(value):
+    """
+    >>> fractionize('1.125')
+    '1⅛'
+    >>> fractionize('1.250')
+    '1¼'
+    >>> fractionize('1.375')
+    '1⅜'
+    >>> fractionize('1.500')
+    '1½'
+    >>> fractionize('1.625')
+    '1⅝'
+    >>> fractionize('1.750')
+    '1¾'
+    >>> fractionize('1.875')
+    '1⅞'
+    >>> fractionize('0.5')
+    '½'
+    >>> fractionize('1')
+    '1'
+    >>> fractionize('1.158')
+    '1 79/500'
+    """
+    f = Fraction(value)
+    whole = math.floor(f)
+    f -= whole
+
+    fractions = {
+        Fraction(1, 2): '\u00BD',
+        Fraction(1, 4): '\u00BC',
+        Fraction(3, 4): '\u00BE',
+        Fraction(1, 8): '\u215B',
+        Fraction(3, 8): '\u215C',
+        Fraction(5, 8): '\u215D',
+        Fraction(7, 8): '\u215E',
+    }
+    if f.numerator == 0:
+        return str(whole)
+    if whole == 0:
+        whole = ''
+    return "{whole}{f}".format(whole=whole, f=fractions.get(f, ' {f.numerator}/{f.denominator}'.format(f=f)))
+
 @register.filter
 @stringfilter
 def formatvalue(value, statname):
-    if statname in ('hand_size', 'arm_length', 'vert_leap', 'broad_jump'):
-        return value + '"'
-    elif statname in ('40_yard', 'shuttle', '3cone', '60ydshuttle'):
+    if statname in ('hand_size', 'arm_length', 'vert_leap'):
+        return fractionize(value) + '"'
+    elif statname in ('40_yard', '20_yard', '10_yard', 'shuttle', '3cone', '60ydshuttle'):
         return value #+ ' s'
     elif statname in ('weight_lbs',):
         return value + ' lbs'
-    elif statname in ('height_in',):
+    elif statname in ('height_in', 'broad_jump'):
         return in_to_ft_in(value)
     return value
 
