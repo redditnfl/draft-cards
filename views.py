@@ -34,11 +34,12 @@ from urllib.request import urlopen
 sshot = Screenshot(0, 0) # Width + Height expands automatically
 
 def add_common_context(context):
+    settings = Settings.objects.all()[0]
     context['positions'] = Player.POSITIONS
     context['teams'] = sorted(nflteams.fullinfo.items(), key=lambda v: v[1]['fullname'])
-    context['settings'] = Settings.objects.all()[0]
+    context['settings'] = settings
     context['msgs'] = []
-    context['next_pick'] = draft.round_pick(2018, min(256, Settings.objects.all()[0].last_submitted_overall + 1))
+    context['next_pick'] = draft.round_pick(settings.draft_year, min(256, Settings.objects.all()[0].last_submitted_overall + 1))
     return context
 
 def latest_update(*args, **kwargs):
@@ -102,7 +103,7 @@ class Picks(View):
         if not request.is_ajax() and False:
             raise http.Http400("This is an ajax view, friend.")
         data = {
-                'current_year': 2018,
+                'current_year': settings.draft_year,
                 'next_pick': 36,
                 'picks': draft.drafts
                 }
@@ -215,7 +216,7 @@ class PreviewPost(View):
         team = nflteams.fullinfo[request.POST['team']]
         context['team'] = team
 
-        overall = draft.overall(2018, int(context['round']), int(context['pick']))
+        overall = draft.overall(settings.draft_year, int(context['round']), int(context['pick']))
         if overall is None:
             raise Exception("Pick {round}.{pick} does not exist".format(**context))
         context['overall'] = overall
@@ -224,7 +225,7 @@ class PreviewPost(View):
         for x in ('tweet', 'reddit_live', 'reddit_title', 'imgur'):
             context[x] = render_to_string('draftcardposter/layout/' + getattr(settings, x + "_template"), context).strip()
 
-        pick_type = draft.pick_type(2018, int(context['round']), int(context['pick']))
+        pick_type = draft.pick_type(settings.draft_year, int(context['round']), int(context['pick']))
         if pick_type and pick_type in (draft.FORFEITED, draft.UNKNOWN, draft.MOVED):
             context['msgs'].append(('warning', 'I don\'t think round {round} has a pick #{pick}. Are you sure?'.format(**context)))
         elif pick_type and pick_type == draft.COMP:
@@ -301,7 +302,7 @@ class PlayerCard(View):
                 name = name.replace('MISPRINT ','')
             firstname, lastname = split_name(name)
             stats = subdivide_stats(player.data) if player is not None else None
-            round_, pick = draft.round_pick(2018, int(overall))
+            round_, pick = draft.round_pick(settings.draft_year, int(overall))
             context = {
                     'p': player,
                     'position': pos,

@@ -74,6 +74,7 @@ class Settings(models.Model):
     reddit_live_template = models.CharField(max_length=200, default='reddit_live.md')
     reddit_title_template = models.CharField(max_length=200, default='reddit_title')
     imgur_template = models.CharField(max_length=200, default='imgur')
+    draft_year = models.IntegerField(default=2019)
 
 
 class Priority(models.Model):
