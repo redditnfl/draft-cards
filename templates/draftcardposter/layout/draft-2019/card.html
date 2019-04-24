@@ -27,6 +27,14 @@
           </div>
           <div class="credit">r/NFL</div>
           <div class="logo"></div>
+          <div class="flag" style="position: absolute; right: 13px; bottom: 13px; z-index: 2; width: 80px; height: auto; background-image: url('');">
+            {% if p.data and p.data.homecountry != 'US' %}
+               {% with "draftcardposter/draft-2019/flags/wikipedia-fixed/"|add:p.data.homecountry|add:".svg" as flag %}
+               {# You're not supposed to use |add like this, but that's where we are #}
+               <img src="{% static flag %}" />
+               {% endwith %}
+            {% endif %}
+          </div>
       </div>
       {% endif %}
       <div class="basic-info">
