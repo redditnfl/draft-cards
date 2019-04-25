@@ -263,7 +263,6 @@ class PreviewPost(View):
         if overall is None:
             raise Exception("Pick {round}.{pick} does not exist".format(**context))
         context['overall'] = overall
-        context['round'], context['pick'] = draft.round_pick(settings.draft_year, int(overall))
         context['permalink'] = 'https://reddit.com/r/'+settings.subreddit+'/comments/_____/'
 
         for type_ in ('tweet', 'reddit_live', 'reddit_title', 'imgur'):
@@ -271,7 +270,7 @@ class PreviewPost(View):
 
         pick_type = draft.pick_type(settings.draft_year, int(context['round']), int(context['pick']))
         if pick_type and pick_type in (draft.FORFEITED, draft.UNKNOWN, draft.MOVED):
-            context['msgs'].append(('warning', 'I don\'t think round {round} has a pick #{pick}. Are you sure?'.format(**context)))
+            context['msgs'].append(('warning', 'I don\'t think round {round} has a pick #{pick}. Are you sure? It has either been forfeited, moved or something else. This will probably mess up the overall pick.'.format(**context)))
         elif pick_type and pick_type == draft.COMP:
             context['msgs'].append(('info', 'This is a compensatory pick. Just so you\'re aware'))
         
