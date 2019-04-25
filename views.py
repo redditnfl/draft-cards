@@ -32,8 +32,6 @@ from django.db import transaction
 from urllib.request import urlopen
 
 
-sshot = Screenshot(0, 0) # Width + Height expands automatically
-
 def add_common_context(context):
     settings = Settings.objects.all()[0]
     context['positions'] = Player.POSITIONS
@@ -328,6 +326,7 @@ def get_and_cache_sshot(fullurl):
     png = cache.get(fullurl)
     if not png:
         print("PNG not cached, regenerating")
+        sshot = Screenshot(0, 0)  # Width + Height expands automatically
         png = sshot.sshot_url_to_png(fullurl, 5.0)
         cache.set(fullurl, png, settings.cache_ttl)
     return png
