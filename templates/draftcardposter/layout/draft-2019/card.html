@@ -14,6 +14,7 @@
           <div class="credit">r/NFL</div>
           <div class="logo"></div>
       </div>
+          <div class="caption" style="font-style: italic"><strong>reddit.com: </strong>It is not known to this writer whether {{ name }} was a fan of the {{ team.mascot }} growing up, but he grew up in {{  p.data.homeaddress }} &mdash; less than {{ team_distance.miles|biground }} miles from stadium</div>
       <div class="name-contain JS-name-contain">
           <div class="first JS-text-bound" style="font-size: 92px; line-height: 86px; letter-spacing: .08em;">{{ firstname }}</div><br>
           <div class="last JS-text-bound" style="font-size: 92px; line-height: 86px; letter-spacing: .08em;">{{ lastname }}</div>
@@ -27,7 +28,7 @@
           </div>
           <div class="credit">r/NFL</div>
           <div class="logo"></div>
-          <div class="flag" style="position: absolute; right: 13px; bottom: 13px; z-index: 2; width: 80px; height: auto; background-image: url('');">
+          <div class="flag" style="position: absolute; right: 20px; bottom: 20px; z-index: 2; width: 80px; height: auto;">
             {% if p.data and p.data.homecountry != 'US' %}
                {% with "draftcardposter/draft-2019/flags/wikipedia-fixed/"|add:p.data.homecountry|add:".svg" as flag %}
                {# You're not supposed to use |add like this, but that's where we are #}

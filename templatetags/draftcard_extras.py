@@ -164,6 +164,18 @@ def formatvalue(value, statname):
     return value
 
 @register.filter
+def biground(value, base=5):
+    """
+    >>> biground(7)
+    10
+    >>> biground(11.0)
+    15
+    """
+    return int(base * round(float(value) / base)) + base
+    return f
+
+
+@register.filter
 def in_to_ft_in(value):
     if not value:
         return '?\'?"'
