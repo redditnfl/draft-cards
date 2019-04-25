@@ -6,45 +6,11 @@ True
 """
 import geopy.distance
 from django import template
-from redditnfl.nfltools import nflteams
+from redditnfl.nfltools import nflteams, sites
 
 register = template.Library()
 
-team_locations = {x.split(':')[0]: tuple(map(float, x.split(':')[1].split(','))) for x in """
-ARI:33.5275,-112.2625
-ATL:33.755,-84.401
-BAL:39.278056,-76.622778
-BUF:42.774,-78.787
-CAR:35.225833,-80.852778
-CHI:41.8623,-87.6167
-CIN:39.095,-84.516
-CLE:41.506111,-81.699444
-DAL:32.747778,-97.092778
-DEN:39.743889,-105.02
-DET:42.34,-83.045556
-GB:44.501389,-88.062222
-HOU:29.684722,-95.410833
-IND:39.760056,-86.163806
-JAX:30.323889,-81.6375
-KC:39.048889,-94.483889
-LA:34.014167,-118.287778
-LAC:33.864,-118.261
-MIA:25.958056,-80.238889
-MIN:44.974,-93.258
-NE:42.090944,-71.264344
-NO:29.950833,-90.081111
-NYG:40.813528,-74.074361
-NYJ:40.813528,-74.074361
-OAK:37.751667,-122.200556
-PHI:39.900833,-75.1675
-PIT:40.446667,-80.015833
-SEA:47.5952,-122.3316
-SF:37.403,-121.97
-TB:27.975833,-82.503333
-TEN:36.166389,-86.771389
-WAS:38.907778,-76.864444
-""".strip().split("\n")}
-
+team_locations = {team['short']: sites.by_team(team['short'])[1][3] for team in filter(lambda t: t['short'] not in ('AFC', 'NFC'), nflteams.fullinfo.values())}
 
 def distance(a, b):
     """
@@ -100,3 +66,4 @@ if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
+    print(" ".join(nflteams.fullinfo.keys()))

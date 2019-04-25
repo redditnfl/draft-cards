@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'draftcardposter/draft-2019/assets/css/styles.css' %}"/>
     <link rel="stylesheet" href="{% static 'draftcardposter/draft-2019/assets/css/extrastyles.css' %}"/>
   </head>
-  <body class="{{ team|teamcssclass }} {{ extraclass }}" data-overall="{{ overall }}">
+  <body class="{{ team|teamcssclass }} round-{{ round }} {{ extraclass }}" data-overall="{{ overall }}">
     <div class="draft-card-contain JS-card-contain">
       {% if hometown %}
       <div class="paper-name"><img src="{% static 'draftcardposter/draft-2019/assets/images/paper-title.png' %}"/></div>
@@ -14,8 +14,22 @@
           <div class="photo-contain JS-player-image" style="background-image: url({% static photo|halftone %});" title="{{ photo }}"></div>
           <div class="credit">r/NFL</div>
           <div class="logo"></div>
+          <div class="flag">
+            {% if p.data and p.data.homecountry != 'US' %}
+               {% with "draftcardposter/draft-2019/flags/wikipedia-fixed/"|add:p.data.homecountry|add:".svg" as flag %}
+               {# You're not supposed to use |add like this, but that's where we are #}
+               <img src="{% static flag %}" />
+               {% endwith %}
+            {% endif %}
+          </div>
       </div>
-          <div class="caption"><strong>reddit.com: </strong>It is not known to this writer whether {{ name }} was a fan of the {{ team.mascot }} growing up, but he grew up in {{  p.data.homeaddress }} &mdash; less than {{ team_distance.miles|biground }} miles from stadium</div>
+          {% if team.short == 'LA' %}
+          <div class="caption"><b>reddit.com: </b>{{ name }} may be too young to have known the {{ team.mascot }} in Los Angeles and we don't know if he is a fan, but he grew up in {{ p.data.homeaddress }} &mdash; less than {{ team_distance.miles|biground }} miles from {{ team|stadium }}</div>
+          {% elif team.short == 'LAC' %}
+          <div class="caption"><b>reddit.com: </b>We don't know {{ name }}'s team allegiance, but he grew up in {{ p.data.homeaddress }} &mdash; less than {{ team_distance.miles|biground }} miles from the {{ team.mascot }}'s current home {{ team|stadium }}</div>
+          {% else %}
+          <div class="caption"><b>reddit.com: </b>It is not known to this writer whether {{ name }} was a fan of the {{ team.mascot }} growing up, but he grew up in {{ p.data.homeaddress }} &mdash; less than {{ team_distance.miles|biground }} miles from {{ team|stadium }}</div>
+          {% endif %}
       <div class="name-contain JS-name-contain">
           <div class="first JS-text-bound" style="font-size: 92px; line-height: 86px; letter-spacing: .08em;">{{ firstname }}</div><br>
           <div class="last JS-text-bound" style="font-size: 92px; line-height: 86px; letter-spacing: .08em;">{{ lastname }}</div>
@@ -62,7 +76,6 @@
           </div>
         </div>
       </div>
-      {% if not hometown %}
       <div class="special-info random-fact">
         <div class="left">#factoid</div>
         {% if p.data.forced_factoid %}
@@ -71,7 +84,6 @@
         <div class="right" id="factoid"></div>
         {% endif %}
       </div>
-      {% endif %}
       <div class="social-info">
           {% if p.data.reddit %}
           {% include "draftcardposter/layout/draft-2019/reddit.html" with account=p.data.reddit %}

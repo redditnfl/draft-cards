@@ -3,12 +3,24 @@ import random
 from django import template
 import math
 from django.template.defaultfilters import stringfilter
+from redditnfl.nfltools import sites
 
 register = template.Library()
 
 @register.filter
 def halftone(filename):
     return filename.replace('playerimgs/', 'playerimgs/halftone/')
+
+
+@register.filter
+def stadium(team):
+    if 'short' in team:
+        team = team['short']
+    stadium = sites.by_team(team)
+    if stadium:
+        return stadium[0]
+    return ''
+
 
 @register.filter
 def order_stats(stats, priorities):

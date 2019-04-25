@@ -14,7 +14,7 @@ httplib2==0.10.3
 idna==2.8
 imgurpython==1.1.7
 MarkupSafe==1.0
--e git+ssh://git@github.com/redditnfl/nfltools.git@2d0ad289d6dd2d8ec24f0b9a146e22e8b4b02ea6#egg=nfltools
+-e git+ssh://git@github.com/redditnfl/nfltools.git@207f0a0ad18ee110d227315f95cae578bf8284d8#egg=nfltools
 oauth2client==4.0.0
 packaging==16.8
 pkg-resources==0.0.0

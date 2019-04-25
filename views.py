@@ -154,7 +154,11 @@ def player_if_found(name, college):
 
 def render_template(type_, context):
     s = Settings.objects.all()[0]
-    return render_to_string('draftcardposter/layout/' + getattr(s, type_ + "_template"), context).strip()
+    try:
+        return render_to_string('draftcardposter/layout/' + getattr(s, type_ + "_template"), context).strip()
+    except Exception:
+        traceback.print_exc()
+        return ''
 
 
 @method_decorator(login_required, name='dispatch')
@@ -189,20 +193,22 @@ class SubmitView(View):
             context['imgururl'] = ret['link']
 
             permalink = None
-            if s.posting_enabled:
-                submission = self.submit_img_to_reddit(s.subreddit, render_template("reddit_title", context), context['imgururl'])
+            reddit_title = render_template("reddit_title", context)
+            if s.posting_enabled and reddit_title:
+                submission = self.submit_img_to_reddit(s.subreddit, reddit_title, context['imgururl'])
                 permalink = submission._reddit.config.reddit_url + submission.permalink
                 context['submission'] = submission
                 context['permalink'] = permalink
+                context['reddit_title'] = reddit_title
 
-            if s.live_thread_id and permalink is not None:
-                reddit_live_msg = render_template("reddit_live", context)
+            reddit_live_msg = render_template("reddit_live", context)
+            if s.live_thread_id and reddit_live_msg:
                 reddit_live_thread = self.post_to_live_thread(reddit_live_msg, context['permalink'])
                 context['reddit_live_msg'] = reddit_live_msg
                 context['reddit_live_thread'] = reddit_live_thread
 
             tweet = render_template("tweet", context)
-            if tweet and len(tweet.strip()) > 0:
+            if tweet:
                 tweeturl = self.submit_twitter(tweet, get_and_cache_sshot(url))
                 context['tweet'] = tweet
                 context['tweeturl'] = tweeturl
