@@ -35,7 +35,7 @@ from urllib.request import urlopen
 def add_common_context(context):
     settings = Settings.objects.all()[0]
     context['positions'] = Player.POSITIONS
-    context['teams'] = sorted(nflteams.fullinfo.items(), key=lambda v: v[1]['fullname'])
+    context['teams'] = sorted(filter(lambda v: v[1]['short'] not in ('AFC', 'NFC'), nflteams.fullinfo.items()), key=lambda v: v[1]['mascot'])
     context['settings'] = settings
     context['msgs'] = []
     context['next_pick'] = draft.round_pick(settings.draft_year, min(256, Settings.objects.all()[0].last_submitted_overall + 1))

@@ -41,7 +41,7 @@
       {% endif %}
       <div class="basic-info">
         <div class="line"><span class="player_position left">{{ position }} &mdash; {{ college }}</span><span class="draft_position right">Round {{ round }}, pick {{ pick }}</span></div>
-        <div class="line"><span class="player_size left">{% if stats.height_in %}{{ stats.height_in|formatvalue:'height_in' }} — {{ stats.weight_lbs|formatvalue:'weight_lbs' }}{% endif %}</span><span class="draft_team right">{{ team.fullname }}</span></div>
+        <div class="line"><span class="player_size left">{% if stats.height_in %}{{ stats.height_in|formatvalue:'height_in' }} — {{ stats.weight_lbs|formatvalue:'weight_lbs' }}{% else %}&nbsp;{% endif %}</span><span class="draft_team right">{{ team.fullname }}</span></div>
 
         <div class="stats">
           <div class="stats-contain">

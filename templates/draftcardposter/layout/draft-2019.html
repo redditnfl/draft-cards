@@ -2,7 +2,7 @@
 {% load draftcard_extras %}
 {% load distance_filters %}
 {% with team_location=team|team_location closest_team=p.data|closest_team %}
-{% with team_distance=team_location|distance:p.data %}
+{% with team_distance=team_location|distance:p %}
 {% random_int 0 100 as shiny %}
 {% if team.short == closest_team.short and team_distance.miles < 50 %}
     {% include "draftcardposter/layout/draft-2019/card.html" with extraclass="home-town" hometown=True %}

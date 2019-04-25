@@ -74,6 +74,8 @@ def closest_team(data):
     >>> closest_team({'lat':39.6094227, 'lng':-75.8395724})['short']
     'PHI'
     """
+    if 'lat' not in data or 'lng' not in data:
+        return None
     latlng = (data['lat'], data['lng'])
     distances = [(team, distance(latlng, loc)) for team, loc in team_locations.items()]
     closest = sorted(distances, key=lambda d: d[1].km)[0]
@@ -83,7 +85,10 @@ def closest_team(data):
 
 
 @register.filter('distance')
-def distance_filter(fromlatlng, todata):
+def distance_filter(fromlatlng, toplayer):
+    if toplayer is None or not hasattr(toplayer, 'data'):
+        return None
+    todata = toplayer.data
     tolatlng = (todata['lat'], todata['lng'])
     return distance(fromlatlng, tolatlng)
 
