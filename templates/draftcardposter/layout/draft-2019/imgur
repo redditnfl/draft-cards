@@ -1,1 +1,1 @@
-Round {{round}} - Pick {{pick}}: {{name}}, {{position}}, {{college}} ({{team.fullname}})
+{% autoescape off %}Round {{round}} - Pick {{pick}}: {{name}}, {{position}}, {{college}} ({{team.fullname}}){% endautoescape %}

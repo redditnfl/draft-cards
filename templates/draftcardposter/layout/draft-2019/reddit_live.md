@@ -1,1 +1,1 @@
-{{ permalink }} 
+{% autoescape off %}{{ permalink }}{% endautoescape %}
