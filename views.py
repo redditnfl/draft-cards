@@ -203,13 +203,13 @@ class SubmitView(View):
 
             reddit_live_msg = render_template("reddit_live", context)
             if s.live_thread_id and reddit_live_msg:
-                reddit_live_thread = self.post_to_live_thread(reddit_live_msg, context['permalink'])
+                reddit_live_thread = self.post_to_live_thread(s.live_thread_id, reddit_live_msg)
                 context['reddit_live_msg'] = reddit_live_msg
                 context['reddit_live_thread'] = reddit_live_thread
 
             tweet = render_template("tweet", context)
             if tweet:
-                tweeturl = self.submit_twitter(tweet, get_and_cache_sshot(url))
+                tweeturl = self.submit_twitter(tweet, get_and_cache_sshot(url.replace('.png', '.html')))
                 context['tweet'] = tweet
                 context['tweeturl'] = tweeturl
         except Exception as e:
