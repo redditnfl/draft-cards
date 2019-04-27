@@ -188,7 +188,8 @@ class SubmitView(View):
 
         try:
             imgur_title = render_template("imgur", context)
-            ret = self.upload_to_imgur(s.imguralbum, imgur_title, url)
+            imgur_album = render_template("imgur_album", context)
+            ret = self.upload_to_imgur(imgur_album, imgur_title, url)
             context['imgurtitle'] = imgur_title
             context['imgururl'] = ret['link']
 
@@ -215,6 +216,7 @@ class SubmitView(View):
         except Exception as e:
             context['msgs'].append(('danger', str(e)))
             context['msgs'].append(('danger', traceback.format_exc()))
+            traceback.print_exc()
         s.last_submitted_overall = overall
         s.save()
         

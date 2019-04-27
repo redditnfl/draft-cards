@@ -63,7 +63,6 @@ class Settings(models.Model):
     range_def = models.CharField(max_length=100)
     last_updated = models.DateTimeField()
     subreddit = models.CharField(max_length=25)
-    imguralbum = models.CharField(max_length=100)
     prio_range_def = models.CharField(max_length=100)
     posting_enabled = models.BooleanField(default=True)
     live_thread_id = models.CharField(max_length=60, blank=True)
@@ -74,6 +73,7 @@ class Settings(models.Model):
     reddit_live_template = models.CharField(max_length=200, default='reddit_live.md')
     reddit_title_template = models.CharField(max_length=200, default='reddit_title')
     imgur_template = models.CharField(max_length=200, default='imgur')
+    imgur_album_template = models.CharField(max_length=200, default='imgur_album')
     draft_year = models.IntegerField(default=2019)
 
 
