@@ -1,1 +1,3 @@
+{% if False %}
 {% autoescape off %}{% load draftcard_extras %}With the {{ overall }}{{ overall|ordinal_suffix }} pick in the 2019 #NFLDraft, {{ team.fullname }} pick {{ name }}, {{ position }} from {{ college }}. {% if player.data.twitter %}Welcome to the NFL, @{{ player.data.twitter }}!{% endif %} {% if player.data.instagram %}Follow him on Instagram @ {{ player.data.instagram }}, too!{% endif %} #draftday{% if submission %} Discuss on https://redd.it/{{ submission.id }}{% endif %}{% endautoescape %}
+{% endif %}
