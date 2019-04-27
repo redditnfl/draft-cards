@@ -1,5 +1,14 @@
 var picks;
 
+function update_overall() {
+    var round = $("#round").val();
+    var pick = $("#pick").val();
+    console.log("Pick selected: " + round + "." + pick);
+    var overall = picks[round-1][pick-1][2];
+    console.log("Overall: " + overall);
+    $("#overall-label").text(overall);
+}
+
 $(document).ready(function() {
     var nextRound = $('#next-round').val();
     var nextPick = $('#next-pick').val();
@@ -27,6 +36,12 @@ $(document).ready(function() {
                     $("#pick").append($('<option>', attrs));
                 }
                 $("#pick").selectpicker('refresh');
+                update_overall();
+            }
+        );
+        $("#pick").on("changed.bs.select",
+            function(e, clickedIndex, newValue, oldValue) {
+                update_overall();
             }
         );
         $("#round").val(nextRound);

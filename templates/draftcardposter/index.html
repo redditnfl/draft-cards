@@ -24,7 +24,7 @@
             Round <select name="round" id="round" class="selectpicker" data-width="fit" title="Round">
             </select>
             Pick <select name="pick" id="pick" class="selectpicker" data-width="fit" title="Pick">
-            </select>
+            </select> (<span id="overall-label"></span> overall)
             Team <select name="team" id="team" class="selectpicker" data-width="fit" title="Team" data-live-search="true">
                 {% for short, team in teams %}
                 <option value="{{ short }}">{{ team.mascot }}</option>
