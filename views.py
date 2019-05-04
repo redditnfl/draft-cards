@@ -61,7 +61,7 @@ class MissingPhotos(generic.TemplateView):
         all_imgs = set()
         for player in Player.objects.all().order_by('name'):
             all_imgs.add(player.data['filename'])
-            if player.data.get('buzzscore', '0') == '0':
+            if player.data.get('buzzscore', '0') == '0' and not player.data.get('draft.overall'):
                 continue
             photo = 'draftcardposter/' + Settings.objects.all()[0].layout + '/playerimgs/' + player.data['filename'] + '.jpg'
             if not finders.find(photo):
