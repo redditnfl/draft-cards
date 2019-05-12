@@ -40,14 +40,12 @@
           </div>
         </div>
       </div>
+      {% if p.data.FACTOID %}
       <div class="special-info random-fact">
         <div class="left">#factoid</div>
-        {% if p.data.FACTOID %}
         <div class="right forced" id="factoid">{{ p.data.FACTOID }}</div>
-        {% else %}
-        <div class="right" id="factoid"></div>
-        {% endif %}
       </div>
+      {% endif %}
       <div class="social-info">
           {% if p.data.reddit %}
           {% include "draftcardposter/layout/top100-2019/reddit.html" with account=p.data.reddit %}
@@ -65,6 +63,5 @@
       </div>
     </div>
     <script src="{% static 'draftcardposter/top100-2019/assets/js/app.js' %}"></script>
-    <script src="{% static 'draftcardposter/top100-2019/assets/js/factoid.js' %}"></script>
   </body>
 </html>
