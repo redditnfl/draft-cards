@@ -1,0 +1,70 @@
+{% load static %}
+{% load draftcard_extras %}
+<html>
+  <head>
+    <link rel="stylesheet" href="https://use.typekit.net/ikq5fbd.css"/>
+    <link rel="stylesheet" href="{% static 'draftcardposter/top100-2019/assets/css/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'draftcardposter/top100-2019/assets/css/extrastyles.css' %}"/>
+  </head>
+  <body class="{{ team|teamcssclass }} round-{{ round }} {{ extraclass }}" data-overall="{{ overall }}">
+    <div class="draft-card-contain JS-card-contain">
+      <div class="photo">
+          <div class="photo-contain JS-player-image" style="background-image: url({% static photo %});"></div>
+          <div class="name-contain JS-name-contain">
+              <div class="first JS-text-bound" style="font-size: 92px; line-height: 86px; letter-spacing: .08em;">{{ firstname }}</div><br>
+              <div class="last JS-text-bound" style="font-size: 92px; line-height: 86px; letter-spacing: .08em;">{{ lastname }}</div>
+          </div>
+          <div class="credit">r/NFL Top100</div>
+          <div class="logo"></div>
+      </div>
+      <div class="basic-info">
+          <div class="line"><span class="player_position left">{{ p.data.specific_position }}</span><span class="draft_position right">Rank {{ p.data.RANK }}</span></div>
+        <div class="line"><span class="draft_team left">{{ team.fullname }}</span></div>
+
+        <div class="stats">
+          <div class="stats-contain">
+
+{% if p and p.data %}
+{% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}
+<div class="stat">
+  <div class="header">
+    {{ stat|statname:value }}{% if type_ %} - {{ type_ }}{% endif %}
+  </div>
+  <div class="number">
+    {{ value|formatvalue:stat }}
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+          </div>
+        </div>
+      </div>
+      <div class="special-info random-fact">
+        <div class="left">#factoid</div>
+        {% if p.data.FACTOID %}
+        <div class="right forced" id="factoid">{{ p.data.FACTOID }}</div>
+        {% else %}
+        <div class="right" id="factoid"></div>
+        {% endif %}
+      </div>
+      <div class="social-info">
+          {% if p.data.reddit %}
+          {% include "draftcardposter/layout/top100-2019/reddit.html" with account=p.data.reddit %}
+          {% elif p.data.twitter %}
+          {% include "draftcardposter/layout/top100-2019/twitter.html" with account=p.data.twitter %}
+          {% elif p.data.instagram %}
+          {% include "draftcardposter/layout/top100-2019/instagram.html" with account=p.data.instagram %}
+          {% endif %}
+
+          {% if p.data.reddit and p.data.twitter %}
+          {% include "draftcardposter/layout/top100-2019/twitter.html" with account=p.data.twitter %}
+          {% elif p.data.twitter and p.data.instagram %}
+          {% include "draftcardposter/layout/top100-2019/instagram.html" with account=p.data.instagram %}
+          {% endif %}
+      </div>
+    </div>
+    <script src="{% static 'draftcardposter/top100-2019/assets/js/app.js' %}"></script>
+    <script src="{% static 'draftcardposter/top100-2019/assets/js/factoid.js' %}"></script>
+  </body>
+</html>
