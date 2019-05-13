@@ -47,18 +47,18 @@
       </div>
       {% endif %}
       <div class="social-info">
-          {% if p.data.reddit %}
-          {% include "draftcardposter/layout/top100-2019/reddit.html" with account=p.data.reddit %}
-          {% elif p.data.twitter %}
-          {% include "draftcardposter/layout/top100-2019/twitter.html" with account=p.data.twitter %}
-          {% elif p.data.instagram %}
-          {% include "draftcardposter/layout/top100-2019/instagram.html" with account=p.data.instagram %}
+          {% if p.data.Reddit %}
+          {% include "draftcardposter/layout/top100-2019/reddit.html" with account=p.data.Reddit %}
+          {% elif p.data.Twitter %}
+          {% include "draftcardposter/layout/top100-2019/twitter.html" with account=p.data.Twitter %}
+          {% elif p.data.Instagram %}
+          {% include "draftcardposter/layout/top100-2019/instagram.html" with account=p.data.Instagram %}
           {% endif %}
 
-          {% if p.data.reddit and p.data.twitter %}
-          {% include "draftcardposter/layout/top100-2019/twitter.html" with account=p.data.twitter %}
-          {% elif p.data.twitter and p.data.instagram %}
-          {% include "draftcardposter/layout/top100-2019/instagram.html" with account=p.data.instagram %}
+          {% if p.data.Reddit and p.data.Twitter %}
+          {% include "draftcardposter/layout/top100-2019/twitter.html" with account=p.data.Twitter %}
+          {% elif p.data.Twitter and p.data.Instagram %}
+          {% include "draftcardposter/layout/top100-2019/instagram.html" with account=p.data.Instagram %}
           {% endif %}
       </div>
     </div>
