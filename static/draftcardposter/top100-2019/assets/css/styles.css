@@ -310,7 +310,7 @@ html * {
           box-sizing: inherit; }
 
 body {
-  font-family: "industry"; }
+  font-family: "industry", "Industry-Medium"; }
 
 .draft-card-contain {
   display: block;
