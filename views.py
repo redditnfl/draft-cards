@@ -1,5 +1,6 @@
 import glob
 from pathlib import Path
+import asyncio
 
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -29,7 +30,6 @@ from redditnfl.nfltools import nflteams
 from redditnfl.nfltools import draft
 
 from django.db import transaction
-from urllib.request import urlopen
 
 
 def add_common_context(context):
@@ -321,9 +321,13 @@ def get_and_cache_sshot(fullurl):
     settings = Settings.objects.all()[0]
     png = cache.get(fullurl)
     if not png:
-        print("PNG not cached, regenerating")
-        sshot = Screenshot(0, 0)  # Width + Height expands automatically
-        png = sshot.sshot_url_to_png(fullurl, 3.0)
+        print("PNG %s not cached, regenerating" % fullurl)
+        async def ss(url):
+            sshot = await Screenshot.create()
+            png = await sshot.sshot_url_to_png(url, 0.3)
+            await sshot.close()
+            return png
+        png = asyncio.run(ss(fullurl))
         cache.set(fullurl, png, settings.cache_ttl)
     return png
 
@@ -359,6 +363,7 @@ class PlayerCard(View):
                     'stats': stats,
                     'misprint': misprint,
                     'priorities': Priority.objects.get(position=pos).merge_with(Priority.objects.get(position='Default')),
+                    'teams': sorted(filter(lambda v: v[1]['short'] not in ('AFC', 'NFC'), nflteams.fullinfo.items()), key=lambda v: v[1]['mascot'])
                     }
             playerimgs = 'draftcardposter/' + settings.layout + '/playerimgs'
             context['photo'] = playerimgs + '/missingno.jpg'
