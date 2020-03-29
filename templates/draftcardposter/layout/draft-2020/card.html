@@ -1,77 +1,43 @@
 {% load static %}
 {% load draftcard_extras %}
+<!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="https://use.typekit.net/ikq5fbd.css"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>{{ p }} | 2020 r/nfl Draft Card</title>
+
+    <style type="text/css">
+        @font-face {
+            font-family: "Benguiat Bold";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/benguiat_bold.woff2' %}") format("woff2"),
+                 url("{% static 'draftcardposter/draft-2020/assets/fonts/benguiat_bold.woff' %}") format("woff"),
+                 url("{% static 'draftcardposter/draft-2020/assets/fonts/benguiat_bold.ttf' %}") format("truetype"),
+                 url("{% static 'draftcardposter/draft-2020/assets/fonts/benguiat_bold.otf' %}") format("opentype");
+            font-style:normal;
+            font-weight:400;
+        }
+
+        {% for short, team in teams %}
+        {% with 'draftcardposter/draft-2020/assets/img/'|add:team.mascot|lower|add:'_template.png' as bg %}
+        .team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
+        {% endwith %}
+        {% endfor %}
+    </style>
+    
     <link rel="stylesheet" href="{% static 'draftcardposter/draft-2020/assets/css/styles.css' %}"/>
+
   </head>
-  <body class="{{ team|teamcssclass }} round-{{ round }} {{ extraclass }}" data-overall="{{ overall }}">
-    <div class="draft-card-contain JS-card-contain">
-      <div class="photo">
-          <div class="photo-contain JS-player-image" style="background-image: url({% static photo %});"></div>
-          <div class="name-contain JS-name-contain">
-              <div class="first JS-text-bound" style="font-size: 92px; line-height: 86px; letter-spacing: .08em;">{{ firstname }}</div><br>
-              <div class="last JS-text-bound" style="font-size: 92px; line-height: 86px; letter-spacing: .08em;">{{ lastname }}</div>
+  <body class="team-{{ team.mascot|lower }}">
+	  <div class="card">
+          <div class="nameplate">
+              <div class="inner-nameplate">{{ firstname }} {{ lastname }}</div>
           </div>
-          <div class="credit">r/NFL</div>
-          <div class="logo"></div>
-          <div class="flag">
-            {% if p.data and p.data.homecountry != 'US' %}
-               {% with "draftcardposter/draft-2020/flags/wikipedia-fixed/"|add:p.data.homecountry|add:".svg" as flag %}
-               {# You're not supposed to use |add like this, but that's where we are #}
-               <img src="{% static flag %}" />
-               {% endwith %}
-            {% endif %}
-          </div>
-      </div>
-      <div class="basic-info">
-        <div class="line"><span class="player_position left">{{ position }} &mdash; {{ college }}</span><span class="draft_position right">Round {{ round }}, pick {{ pick }}</span></div>
-        <div class="line"><span class="player_size left">{% if stats.height_in %}{{ stats.height_in|formatvalue:'height_in' }} — {{ stats.weight_lbs|formatvalue:'weight_lbs' }}{% else %}&nbsp;{% endif %}</span><span class="draft_team right">{{ team.fullname }}</span></div>
-
-        <div class="stats">
-          <div class="stats-contain">
-
-{% if p and p.data %}
-{% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}
-<div class="stat">
-  <div class="header">
-    {{ stat|statname:value }}{% if type_ %} - {{ type_ }}{% endif %}
-  </div>
-  <div class="number">
-    {{ value|formatvalue:stat }}
-  </div>
-</div>
-{% endfor %}
-{% endif %}
-
-          </div>
-        </div>
-      </div>
-      <div class="special-info random-fact">
-        <div class="left">#factoid</div>
-        {% if p.data.forced_factoid %}
-        <div class="right forced" id="factoid">{{ p.data.forced_factoid }}</div>
-        {% else %}
-        <div class="right" id="factoid"></div>
-        {% endif %}
-      </div>
-      <div class="social-info">
-          {% if p.data.reddit %}
-          {% include "draftcardposter/layout/draft-2020/reddit.html" with account=p.data.reddit %}
-          {% elif p.data.twitter %}
-          {% include "draftcardposter/layout/draft-2020/twitter.html" with account=p.data.twitter %}
-          {% elif p.data.instagram %}
-          {% include "draftcardposter/layout/draft-2020/instagram.html" with account=p.data.instagram %}
-          {% endif %}
-
-          {% if p.data.reddit and p.data.twitter %}
-          {% include "draftcardposter/layout/draft-2020/twitter.html" with account=p.data.twitter %}
-          {% elif p.data.twitter and p.data.instagram %}
-          {% include "draftcardposter/layout/draft-2020/instagram.html" with account=p.data.instagram %}
-          {% endif %}
-      </div>
-    </div>
+          <div class="noise full-bleed" style="background-image: url('{% static 'draftcardposter/draft-2020/assets/img/noise_1.png' %}')"></div>
+          <div class="card-base full-bleed"></div>
+          <div class="player full-bleed" style="background-image: url('{% static photo %}')"></div>
+          <div class="player effect full-bleed" style="background-image: url('{% static photo %}')"></div>
+	  </div>
     <script src="{% static 'draftcardposter/draft-2020/assets/js/app.js' %}"></script>
-    <script src="{% static 'draftcardposter/draft-2020/assets/js/factoid.js' %}"></script>
   </body>
 </html>

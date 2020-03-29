@@ -95,6 +95,7 @@ praw.ini
 output/
 playerimgs
 logos/
+fonts
 
 google_client_secret.json
 imgur_client_secret.json
