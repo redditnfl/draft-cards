@@ -18,9 +18,24 @@
             font-weight:400;
         }
 
+        @font-face {
+            font-family: "Collegiate Black FLF";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/_01CollegiateBlackFLF.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 200;
+        }
+
+        body.round-1 .inner-nameplate {
+            background-image: url("{% static "draftcardposter/draft-2020/assets/img/goldleaf.png" %}");
+            background-size: cover;
+        }
+
         {% for short, team in teams %}
-        {% with 'draftcardposter/draft-2020/assets/img/'|add:team.mascot|lower|add:'_template.png' as bg %}
+        {% with 'draftcardposter/draft-2020/assets/img/'|add:team.mascot|lower|add:'.png' as bg %}
         .team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
+        {% endwith %}
+        {% with 'draftcardposter/draft-2020/assets/img/r1'|add:team.mascot|lower|add:'.png' as bg %}
+        .round-1.team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
         {% endwith %}
         {% endfor %}
     </style>
@@ -28,16 +43,44 @@
     <link rel="stylesheet" href="{% static 'draftcardposter/draft-2020/assets/css/styles.css' %}"/>
 
   </head>
-  <body class="team-{{ team.mascot|lower }}">
+  <body class="team-{{ team.mascot|lower }} round-{{ round }}" data-overall="{{ overall }}">
 	  <div class="card">
           <div class="nameplate">
               <div class="inner-nameplate">{{ firstname }} {{ lastname }}</div>
           </div>
-          <div class="noise full-bleed" style="background-image: url('{% static 'draftcardposter/draft-2020/assets/img/noise_1.png' %}')"></div>
+          <div class="draft-position">
+              <span class="round">Round {{ round }}</span>
+              <span class="pick">Pick {{ pick }}</span>
+          </div>
+          <div class="position">{{ position_long|lower }}</div>
+          <div class="noise full-bleed" style="background-image: url('{% static 'draftcardposter/draft-2020/assets/img/01_noise.png' %}')"></div>
           <div class="card-base full-bleed"></div>
           <div class="player" style="background-image: url('{% static photo %}')"></div>
           <div class="player effect" style="background-image: url('{% static photo %}')"></div>
+          <div class="random-fact"><span id="random-fact"></span></div>
+          <div class="stats">
+            <div class="stats-contain">
+
+            {% if p and p.data %}
+            {% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}
+            <div class="stat">
+              <div class="header">
+                {{ stat|statname:value }}{% if type_ %} ({{ type_ }}){% endif %}
+              </div>
+              <div class="number">
+                {{ value|formatvalue:stat }}
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {{  priorities|pprint }}
+            <pre>{{  p.data|pprint }}</pre>
+
+            </div>
+          </div>
 	  </div>
     <script src="{% static 'draftcardposter/draft-2020/assets/js/app.js' %}"></script>
+    <script src="{% static 'draftcardposter/draft-2020/assets/js/factoid.js' %}"></script>
   </body>
 </html>
