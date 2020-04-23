@@ -1,5 +1,7 @@
 from fractions import Fraction
 import random
+from pprint import pprint
+
 from django import template
 import math
 from django.template.defaultfilters import stringfilter
@@ -99,12 +101,12 @@ def statname(statname, value):
             'arm_length': 'Arm Length',
             'wonderlic': 'Wonderlic',
             '40_yard': '40 yd dash',
-            'bench_press': 'Bench Press Reps',
+            'bench_press': 'Bench Press',
             'vert_leap'   : 'Vert. Leap',
-            'broad_jump': 'Broad Jump',
-            'shuttle': 'Short Shuttle',
+            'broad_jump': 'Broad Jmp',
+            'shuttle': 'Shuttle',
             '3cone': '3-cone drill',
-            '60ydshuttle': '60 yard shuttle',
+            '60ydshuttle': '60 shuttle',
             'Pass-Int': 'Interceptions',
             'Rec-TD': 'Rec. TDs'
             }
@@ -168,12 +170,42 @@ def formatvalue(value, statname):
     if statname in ('hand_size', 'arm_length', 'vert_leap'):
         return fractionize(value) + '"'
     elif statname in ('40_yard', '20_yard', '10_yard', 'shuttle', '3cone', '60ydshuttle'):
-        return value #+ ' s'
+        return "{:0.1f}".format(float(value)) #+ ' s'
     elif statname in ('weight_lbs',):
         return value + ' lbs'
     elif statname in ('height_in', 'broad_jump'):
         return in_to_ft_in(value)
+    elif statname in ('cmp_pct',):
+        return "{:0.1f}%".format(100*float(value))
     return value
+
+@register.filter
+def substats(value, subgroup):
+    ret = {}
+    for k, v in value.items():
+        if k.startswith(subgroup + '.'):
+            ret[k[len(subgroup)+1:]] = v
+    return ret
+
+
+def toss_value(v):
+    return str(v).strip() in ('', '0', '0.0')
+
+
+@register.filter
+def remove_zeroes(value, position):
+    ret = {}
+    keepers = {
+        'QB': ('pass_int',),
+    }
+    keep = keepers.get(position, [])
+    for k, v in value.items():
+        if toss_value(v) and k not in keep:
+            pass
+        else:
+            ret[k] = v
+    return ret
+
 
 @register.filter
 def biground(value, base=5):
@@ -265,6 +297,50 @@ def random_int(min=0, max=10):
     Create a random integer with given min and max
     """
     return random.randint(min, max)
+
+@register.filter
+def items(value):
+    return value.items()
+
+@register.filter
+def cfb_sort(input_value, position):
+    orders = {
+        'C': ('TACOS', 'BURGERS', 'HAMS', 'VEGGIES'),
+        'CB': ('def_int', 'tackles_solo', 'tackles_assists', 'sacks', 'pass_cmp', 'pass_rating'),
+        'DE': ('tackles_solo', 'tackles_assists', 'tackles_loss', 'sacks', 'def_int', 'pass_att'),
+        'DT': ('tackles_solo', 'tackles_assists', 'tackles_loss', 'sacks', 'def_int', 'pass_att'),
+        'FB': ('rush_att', 'rush_yds', 'rush_yds_per_att', 'rush_td', 'rec', 'rec_yds'),
+        'FS': ('def_int', 'tackles_solo', 'tackles_assists', 'sacks', 'pass_cmp', 'pass_rating'),
+        'ILB': ('tackles_solo', 'tackles_assists', 'tackles_loss', 'sacks', 'def_int', 'pass_att'),
+        'K': ('HP', 'MP', 'DEX', 'WIS', 'STR', 'INT'),
+        'LS': ('HP', 'MP', 'DEX', 'WIS', 'STR', 'INT'),
+        'OG': ('TACOS', 'BURGERS', 'HAMS', 'VEGGIES'),
+        'OLB': ('tackles_solo', 'tackles_assists', 'tackles_loss', 'sacks', 'def_int', 'pass_att'),
+        'OT': ('TACOS', 'BURGERS', 'HAMS', 'VEGGIES'),
+        'P': ('HP', 'MP', 'DEX', 'WIS', 'STR', 'INT'),
+        'QB': ('pass_att', 'cmp_pct', 'pass_yds', 'pass_td', 'pass_int', 'pass_rating'),
+        'RB': ('rush_att', 'rush_yds', 'rush_yds_per_att', 'rush_td', 'rec', 'rec_yds'),
+        'SS': ('def_int', 'tackles_solo', 'tackles_assists', 'sacks', 'pass_cmp', 'pass_rating'),
+        'TE': ('rec', 'rec_yds', 'rec_td', 'rec_yds_per_rec', 'pass_yds', 'pass_yds'),
+        'WR': ('rec', 'rec_yds', 'rec_td', 'rec_yds_per_rec', 'rush_yds', 'rush_td'),
+    }
+    order = orders[position]
+    return sorted(input_value.items(), key=lambda item: order.index(item[0]) if item[0] in order else len(order)+1)
+
+@register.filter
+def add_stats(input_value, position):
+    if position in ('K', 'P', 'LS'):
+        for k in ('HP', 'MP', 'DEX', 'WIS', 'STR', 'INT'):
+            input_value[k] = random_int(20, 40)
+        input_value['STR'] = 0
+    elif position in ('C', 'OG', 'OT'):
+        for k in ('TACOS', 'BURGERS', 'HAMS', 'VEGGIES'):
+            input_value[k] = random_int(1, 99)
+        input_value['VEGGIES'] = 0
+    elif position in ('QB',):
+        if 'pass_att' in input_value and 'pass_cmp' in input_value:
+            input_value['cmp_pct'] = float(input_value['pass_cmp']) / float(input_value['pass_att'])
+    return input_value
 
 
 if __name__ == "__main__":

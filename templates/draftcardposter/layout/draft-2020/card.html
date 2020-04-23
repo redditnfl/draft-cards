@@ -5,6 +5,24 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'draftcardposter/icon/apple-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'draftcardposter/icon/apple-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'draftcardposter/icon/apple-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'draftcardposter/icon/apple-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'draftcardposter/icon/apple-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'draftcardposter/icon/apple-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'draftcardposter/icon/apple-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'draftcardposter/icon/apple-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'draftcardposter/icon/apple-icon-180x180.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'draftcardposter/icon/android-icon-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'draftcardposter/icon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'draftcardposter/icon/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'draftcardposter/icon/favicon-16x16.png' %}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{% static 'draftcardposter/icon/ms-icon-144x144.png' %}">
+    <meta name="theme-color" content="#ffffff">
+
     <title>{{ p }} | 2020 r/nfl Draft Card</title>
 
     <style type="text/css">
@@ -25,8 +43,51 @@
             font-weight: 200;
         }
 
+        @font-face {
+            font-family: "Dosis Bold";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-Bold.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: "Dosis Book";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-Book.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: "Dosis ExtraBold";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-ExtraBold.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: "Dosis ExtraLight";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-ExtraLight.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: "Dosis Light";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-Light.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: "Dosis Medium";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-Medium.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: "Dosis SemiBold";
+            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-SemiBold.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+
         body.round-1 .inner-nameplate {
-            background-image: url("{% static "draftcardposter/draft-2020/assets/img/goldleaf.png" %}");
+            background-image: url("{% static "draftcardposter/draft-2020/assets/img/goldleaf.jpg" %}");
             background-size: cover;
         }
 
@@ -34,7 +95,7 @@
         {% with 'draftcardposter/draft-2020/assets/img/'|add:team.mascot|lower|add:'.png' as bg %}
         .team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
         {% endwith %}
-        {% with 'draftcardposter/draft-2020/assets/img/r1'|add:team.mascot|lower|add:'.png' as bg %}
+        {% with 'draftcardposter/draft-2020/assets/img/Round 1/r1'|add:team.mascot|lower|add:'.png' as bg %}
         .round-1.team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
         {% endwith %}
         {% endfor %}
@@ -62,25 +123,58 @@
             <div class="stats-contain">
 
             {% if p and p.data %}
+            <div class="stat">
+                <div class="header">Height</div>
+                <div class="spacer"></div>
+                <div class="number">{{ p.data.height_in|formatvalue:'height_in' }}</div>
+            </div>
+
+            <div class="stat">
+                <div class="header">Weight</div>
+                <div class="spacer"></div>
+                <div class="number">{{ p.data.weight_lbs|formatvalue:'weight_lbs' }}</div>
+            </div>
+
+          {%  if p.data|substats:'cfb'|length > 0 %}
+              {% for stat, value in p.data|substats:'cfb'|remove_zeroes:position|add_stats:position|cfb_sort:position|slice:"0:6" %}
+
+                <div class="stat">
+                  <div class="header">
+                    {{ stat|statname:value }}
+                  </div>
+                  <div class="spacer"></div>
+                  <div class="number">
+                    {{ value|formatvalue:stat }}
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
+
             {% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}
             <div class="stat">
               <div class="header">
                 {{ stat|statname:value }}{% if type_ %} ({{ type_ }}){% endif %}
               </div>
+              <div class="spacer"></div>
               <div class="number">
                 {{ value|formatvalue:stat }}
               </div>
             </div>
             {% endfor %}
-            {% endif %}
 
-            {{  priorities|pprint }}
-            <pre>{{  p.data|pprint }}</pre>
+            {% endif %}
 
             </div>
           </div>
 	  </div>
     <script src="{% static 'draftcardposter/draft-2020/assets/js/app.js' %}"></script>
     <script src="{% static 'draftcardposter/draft-2020/assets/js/factoid.js' %}"></script>
+<!--
+      <pre>{{ p.data|substats:'cfb'|remove_zeroes:'pass_int'|cfb_sort:position|pprint }}</pre>
+      <pre>{{ priorities|pprint }}</pre><hr />
+      <pre>{{ p.data|pprint }}</pre><hr />
+      <pre>{{ p.data|order_stats:priorities|pprint }}</pre><hr />
+-->
+
   </body>
 </html>
