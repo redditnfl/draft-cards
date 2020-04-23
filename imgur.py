@@ -4,8 +4,9 @@ import json
 from imgurpython import ImgurClient
 import os.path
 import webbrowser
-from imgurpython.helpers.error import ImgurClientRateLimitError
+from imgurpython.helpers.error import ImgurClientRateLimitError, ImgurClientError
 from requests.exceptions import ConnectionError, ConnectTimeout
+import traceback
 
 CREDENTIALS_FILE = 'imgur_client_secret.json'
 
@@ -19,6 +20,10 @@ def imgur_retry(f):
             except ImgurClientRateLimitError as e:
                 print("Rate Limit Error, sleeping 5 minutes (%s)" % e)
                 time.sleep(300)
+            except ImgurClientError as e:
+                traceback.print_exc()
+                print("Imgur client error, sleeping 10 seconds (%s)" % e)
+                time.sleep(10)
             except (ConnectionError, ConnectTimeout) as e:
                 print("Connection issue, sleeping 10 seconds (%s)" % e)
                 time.sleep(10)
