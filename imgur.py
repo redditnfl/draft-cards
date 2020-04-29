@@ -22,8 +22,8 @@ def imgur_retry(f):
                 time.sleep(300)
             except ImgurClientError as e:
                 traceback.print_exc()
-                print("Imgur client error, sleeping 10 seconds (%s)" % e)
-                time.sleep(10)
+                print("Imgur client error, sleeping 2 seconds (%s)" % e)
+                time.sleep(2)
             except (ConnectionError, ConnectTimeout) as e:
                 print("Connection issue, sleeping 10 seconds (%s)" % e)
                 time.sleep(10)
@@ -36,6 +36,7 @@ class Imgur:
             data = json.load(fp)
         self.client = ImgurClient(data['client_id'], data['client_secret'])
         self.get_credentials()
+        self.created_albums = {}
 
     def get_credentials(self):
         home_dir = os.path.expanduser('~')
@@ -64,11 +65,13 @@ class Imgur:
 
     @imgur_retry
     def get_or_make_album(self, albumtitle):
-        for album in self.client.get_account_albums('me'):
-            if album.title == albumtitle:
-                return album.id
-        ret = self.client.create_album({'title': albumtitle})
-        return ret['id']
+        if albumtitle not in self.created_albums:
+            for album in self.client.get_account_albums('me'):
+                if album.title == albumtitle:
+                    return album.id
+            ret = self.client.create_album({'title': albumtitle})
+            self.created_albums[albumtitle] = ret['id']
+        return self.created_albums[albumtitle]
 
     @imgur_retry
     def get_album_images(self, album_id):
