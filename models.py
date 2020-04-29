@@ -3,7 +3,7 @@ import json
 
 POSITIONS = (
         ('QB', 'Quarterback'),
-        ('WR', 'Wide Reciever'),
+        ('WR', 'Wide Receiver'),
         ('CB', 'Cornerback'),
         ('K', 'Kicker'),
         ('P', 'Punter'),
@@ -11,7 +11,7 @@ POSITIONS = (
         ('DE', 'Defensive End'),
         ('ILB', 'Inside Linebacker'),
         ('DT', 'Defensive Tackle'),
-        ('RB', 'Runningback'),
+        ('RB', 'Running back'),
         ('OT', 'Offensive Tackle'),
         ('OG', 'Offensive Guard'),
         ('TE', 'Tight end'),
