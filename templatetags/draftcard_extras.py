@@ -170,7 +170,7 @@ def formatvalue(value, statname):
     if statname in ('hand_size', 'arm_length', 'vert_leap'):
         return fractionize(value) + '"'
     elif statname in ('40_yard', '20_yard', '10_yard', 'shuttle', '3cone', '60ydshuttle'):
-        return "{:0.1f}".format(float(value)) #+ ' s'
+        return "{:0.2f}".format(float(value)) #+ ' s'
     elif statname in ('weight_lbs',):
         return value + ' lbs'
     elif statname in ('height_in', 'broad_jump'):
@@ -341,6 +341,10 @@ def add_stats(input_value, position):
         if 'pass_att' in input_value and 'pass_cmp' in input_value:
             input_value['cmp_pct'] = float(input_value['pass_cmp']) / float(input_value['pass_att'])
     return input_value
+
+@register.filter
+def get_key(input_value, key):
+    return input_value.get(key, '')
 
 
 if __name__ == "__main__":
