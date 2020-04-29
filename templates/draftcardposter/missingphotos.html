@@ -1,9 +1,12 @@
 {% extends "draftcardposter/base.html" %}
+{% load draftcard_extras %}
 {% block title %}Missing photos{% endblock %}
 
 {% block content %}
 <h1>/r/NFL Draft card postinator</h1>
 <p class="lead">Th{{ missing|length|pluralize:"is,ese" }} {{ missing|length }} player{{ missing|length|pluralize }} missing a photo</p>
+
+<p>Photos should be portrait, 628x800 or higher res. (11:14 ratio)</p>
 {% if msg %}
 <div class="alert alert-success" role="alert">{{ msg }}</div>
 {% endif %}
@@ -12,7 +15,7 @@
         cursor: pointer;
     }
 </style>
-<table class="table table-hover table-condensed" id="missinglist"><thead><tr><th>Name</th><th>Position</th><th>College</th><th>Filename</th><th>Buzz</th></tr></thead>
+<table class="table table-hover table-condensed" id="missinglist"><thead><tr><th>Name</th><th>Position</th><th>College</th><th>Filename</th><th>Buzz</th><th>Draft position</th></tr></thead>
 <tbody>
 {% for player in missing %}
     <tr>
@@ -21,6 +24,7 @@
         <td data-value="{{ player.college }}">{{ player.college }}</td>
         <td data-value="{{ player.data.filename }}">{{ player.data.filename }}</td>
         <td data-value="{{ player.data.buzzscore }}">{{ player.data.buzzscore }}</td>
+        <td data-value="{{ player.data|get_key:'draft.overall' }}">{% if player.data|get_key:'draft.overall' %}{{ player.data|get_key:'draft.overall' }} ({{ player.data|get_key:'draft.round' }}.{{ player.data|get_key:'draft.pick' }}){% endif %}</td>
     </tr>
 {% endfor %}
 </tbody>

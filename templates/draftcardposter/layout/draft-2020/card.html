@@ -135,9 +135,8 @@
                 <div class="number">{{ p.data.weight_lbs|formatvalue:'weight_lbs' }}</div>
             </div>
 
-          {%  if p.data|substats:'cfb'|length > 0 %}
+          {% if p.data|substats:'cfb'|remove_zeroes:position|add_stats:position|length > 0 %}
               {% for stat, value in p.data|substats:'cfb'|remove_zeroes:position|add_stats:position|cfb_sort:position|slice:"0:6" %}
-
                 <div class="stat">
                   <div class="header">
                     {{ stat|statname:value }}
@@ -148,6 +147,19 @@
                   </div>
                 </div>
               {% endfor %}
+          {% elif p.data|substats:'xfl'|remove_zeroes:position|add_stats:position|length > 0 %}
+              {% for stat, value in p.data|substats:'xfl'|remove_zeroes:position|add_stats:position|cfb_sort:position|slice:"0:6" %}
+                <div class="stat">
+                  <div class="header">
+                    {{ stat|statname:value }}
+                  </div>
+                  <div class="spacer"></div>
+                  <div class="number">
+                    {{ value|formatvalue:stat }}
+                  </div>
+                </div>
+              {% endfor %}
+              {% else %}
             {% endif %}
 
             {% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}
@@ -169,12 +181,5 @@
 	  </div>
     <script src="{% static 'draftcardposter/draft-2020/assets/js/app.js' %}"></script>
     <script src="{% static 'draftcardposter/draft-2020/assets/js/factoid.js' %}"></script>
-<!--
-      <pre>{{ p.data|substats:'cfb'|remove_zeroes:'pass_int'|cfb_sort:position|pprint }}</pre>
-      <pre>{{ priorities|pprint }}</pre><hr />
-      <pre>{{ p.data|pprint }}</pre><hr />
-      <pre>{{ p.data|order_stats:priorities|pprint }}</pre><hr />
--->
-
   </body>
 </html>
