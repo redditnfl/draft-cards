@@ -1,3 +1,4 @@
+appdirs==1.4.3
 beautifulsoup4==4.7.1
 cachetools==3.1.0
 certifi==2019.3.9
@@ -14,19 +15,25 @@ httplib2==0.10.3
 idna==2.8
 imgurpython==1.1.7
 MarkupSafe==1.0
--e git+ssh://git@github.com/redditnfl/nfltools.git@207f0a0ad18ee110d227315f95cae578bf8284d8#egg=nfltools
+-e git+https://git@github.com/redditnfl/nfltools.git@7ca6985#egg=nfltools
 oauth2client==4.0.0
 packaging==16.8
 pkg-resources==0.0.0
 praw==6.1.1
 prawcore==1.0.1
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+pyee==7.0.1
 pyparsing==2.4.0
+pyppeteer==0.0.25
 pytz==2019.1
 requests==2.21.0
+rsa==4.0
 selenium==3.141.0
 six==1.10.0
 soupsieve==1.9
 sqlparse==0.3.0
+tqdm==4.44.0
 twitter==1.18.0
 tzlocal==1.5.1
 update-checker==0.16
@@ -34,4 +41,5 @@ uritemplate==3.0.0
 urllib3==1.24.2
 webencodings==0.5.1
 websocket-client==0.56.0
+websockets==8.1
 xvfbwrapper==0.2.9

@@ -1,5 +1,6 @@
 import glob
 from pathlib import Path
+import asyncio
 
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -14,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import last_modified
 from django.utils.decorators import method_decorator
 from django.core.cache import cache
+import time
 from datetime import datetime, timezone
 from pprint import pprint
 from django.views import generic, View
@@ -29,7 +31,6 @@ from redditnfl.nfltools import nflteams
 from redditnfl.nfltools import draft
 
 from django.db import transaction
-from urllib.request import urlopen
 
 
 def add_common_context(context):
@@ -185,18 +186,26 @@ class SubmitView(View):
         context['overall'] = int(overall)
         context['round'], context['pick'] = draft.round_pick(s.draft_year, int(overall))
 
+        fn = 'temp-card.png'
+        image_data = get_and_cache_sshot(url.replace('.png', '.html'))
+        with open(fn, 'wb') as fp:
+            fp.write(image_data)
 
         try:
-            imgur_title = render_template("imgur", context)
-            imgur_album = render_template("imgur_album", context)
-            ret = self.upload_to_imgur(imgur_album, imgur_title, url)
-            context['imgurtitle'] = imgur_title
-            context['imgururl'] = ret['link']
+            if s.image_host == Settings.IMGUR:
+                imgur_title = render_template("imgur", context)
+                imgur_album = render_template("imgur_album", context)
+                ret = self.upload_to_imgur(imgur_album, imgur_title, url)
+                context['imagetitle'] = imgur_title
+                context['imageurl'] = ret['link']
 
             permalink = None
             reddit_title = render_template("reddit_title", context)
             if s.posting_enabled and reddit_title:
-                submission = self.submit_img_to_reddit(s.subreddit, reddit_title, context['imgururl'])
+                if s.image_host == Settings.REDDIT:
+                    submission = self.submit_img_to_reddit_as_pic(s.subreddit, reddit_title, fn)
+                else:
+                    submission = self.submit_img_to_reddit(s.subreddit, reddit_title, context['imageurl'])
                 permalink = submission._reddit.config.reddit_url + submission.permalink
                 context['submission'] = submission
                 context['permalink'] = permalink
@@ -210,7 +219,7 @@ class SubmitView(View):
 
             tweet = render_template("tweet", context)
             if tweet:
-                tweeturl = self.submit_twitter(tweet, get_and_cache_sshot(url.replace('.png', '.html')))
+                tweeturl = self.submit_twitter(tweet, image_data)
                 context['tweet'] = tweet
                 context['tweeturl'] = tweeturl
         except Exception as e:
@@ -222,14 +231,19 @@ class SubmitView(View):
         
         return render(request, 'draftcardposter/submit.html', context=context)
 
-    def upload_to_imgur(self, album, title, url):
+    def upload_to_imgur(self, album, title, fn):
         imgur = Imgur()
-        return imgur.upload_url(url, album, title)
+        return imgur.upload(fn, album, title)
 
     def submit_img_to_reddit(self, srname, title, url):
         r = Reddit('draftcardposter')
         sub = r.subreddit(srname)
         return sub.submit(title, url=url)
+
+    def submit_img_to_reddit_as_pic(self, srname, title, fn):
+        r = Reddit('draftcardposter')
+        sub = r.subreddit(srname)
+        return sub.submit_image(title, fn)
 
     def post_to_live_thread(self, live_thread_id, body):
         r = Reddit('draftcardposter')
@@ -317,14 +331,24 @@ def subdivide_stats(data):
     return ret
 
 
+def current_time_in_millis():
+    return int(round(time.time() * 1000))
+
+
 def get_and_cache_sshot(fullurl):
     settings = Settings.objects.all()[0]
     png = cache.get(fullurl)
+    start = current_time_in_millis()
     if not png:
-        print("PNG not cached, regenerating")
-        sshot = Screenshot(0, 0)  # Width + Height expands automatically
-        png = sshot.sshot_url_to_png(fullurl, 3.0)
+        print("PNG %s not cached, regenerating" % fullurl)
+        async def ss(url):
+            sshot = await Screenshot.create()
+            png = await sshot.sshot_url_to_png(url, 0.3)
+            await sshot.close()
+            return png
+        png = asyncio.run(ss(fullurl))
         cache.set(fullurl, png, settings.cache_ttl)
+    print("Retrieved %s in %d ms" % (fullurl, (current_time_in_millis() - start)))
     return png
 
 class PlayerCard(View):
@@ -359,6 +383,7 @@ class PlayerCard(View):
                     'stats': stats,
                     'misprint': misprint,
                     'priorities': Priority.objects.get(position=pos).merge_with(Priority.objects.get(position='Default')),
+                    'teams': sorted(filter(lambda v: v[1]['short'] not in ('AFC', 'NFC'), nflteams.fullinfo.items()), key=lambda v: v[1]['mascot'])
                     }
             playerimgs = 'draftcardposter/' + settings.layout + '/playerimgs'
             context['photo'] = playerimgs + '/missingno.jpg'

@@ -1,24 +1,33 @@
 {% extends "draftcardposter/base.html" %}
+{% load draftcard_extras %}
 {% block title %}Missing photos{% endblock %}
 
 {% block content %}
 <h1>/r/NFL Draft card postinator</h1>
 <p class="lead">Th{{ missing|length|pluralize:"is,ese" }} {{ missing|length }} player{{ missing|length|pluralize }} missing a photo</p>
+
+<p>Photos should be portrait, 628x800 or higher res. (11:14 ratio)</p>
 {% if msg %}
 <div class="alert alert-success" role="alert">{{ msg }}</div>
 {% endif %}
-<table class="table table-hover table-condensed"><thead><th>Name</th><th>Position</th><th>College</th><th>Filename</th><th>Buzz</th></thead>
-{% for player in missing %}
+<style type="text/css">
+    #missinglist th {
+        cursor: pointer;
+    }
+</style>
+<table class="table table-hover table-condensed" id="missinglist"><thead><tr><th>Name</th><th>Position</th><th>College</th><th>Filename</th><th>Buzz</th><th>Draft position</th></tr></thead>
 <tbody>
+{% for player in missing %}
     <tr>
-        <td>{{ player.name }}</td>
-        <td>{{ player.position }}</td>
-        <td>{{ player.college }}</td>
-        <td>{{ player.data.filename }}</td>
-        <td>{{ player.data.buzzscore }}</td>
+        <td data-value="{{ player.name }}" >{{ player.name }}</td>
+        <td data-value="{{ player.position }}">{{ player.position }}</td>
+        <td data-value="{{ player.college }}">{{ player.college }}</td>
+        <td data-value="{{ player.data.filename }}">{{ player.data.filename }}</td>
+        <td data-value="{{ player.data.buzzscore }}">{{ player.data.buzzscore }}</td>
+        <td data-value="{{ player.data|get_key:'draft.overall' }}">{% if player.data|get_key:'draft.overall' %}{{ player.data|get_key:'draft.overall' }} ({{ player.data|get_key:'draft.round' }}.{{ player.data|get_key:'draft.pick' }}){% endif %}</td>
     </tr>
-</tbody>
 {% endfor %}
+</tbody>
 </table>
 
 {% if surplus %}
@@ -35,4 +44,26 @@
 </table>
 {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        var sortcol=-1;
+        var asc=true;
+
+        $("#missinglist th").click(function changesort(obj) {
+            var newsortcol = obj.target.cellIndex;
+            asc = newsortcol == sortcol ? !asc : true;
+            console.log("Sort by", obj.target.textContent, newsortcol, asc);
+            var tbody = $("#missinglist tbody");
+            var rows = $("tr", tbody);
+            rows.detach().sort(function compare(a,b) {
+                var av = $("td", a).eq(newsortcol).data('value');
+                var bv = $("td", b).eq(newsortcol).data('value');
+                return (asc ? 1 : -1) * ((av > bv) ? (av > bv) ? 1 : 0 : -1);
+            });
+            tbody.append(rows);
+            sortcol = newsortcol;
+        });
+    </script>
 {% endblock %}

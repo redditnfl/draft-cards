@@ -3,7 +3,7 @@ import json
 
 POSITIONS = (
         ('QB', 'Quarterback'),
-        ('WR', 'Wide Reciever'),
+        ('WR', 'Wide Receiver'),
         ('CB', 'Cornerback'),
         ('K', 'Kicker'),
         ('P', 'Punter'),
@@ -11,7 +11,7 @@ POSITIONS = (
         ('DE', 'Defensive End'),
         ('ILB', 'Inside Linebacker'),
         ('DT', 'Defensive Tackle'),
-        ('RB', 'Runningback'),
+        ('RB', 'Running back'),
         ('OT', 'Offensive Tackle'),
         ('OG', 'Offensive Guard'),
         ('TE', 'Tight end'),
@@ -59,6 +59,13 @@ class Player(models.Model):
 
 
 class Settings(models.Model):
+    IMGUR = 'IMGUR'
+    REDDIT = 'REDDIT'
+
+    IMAGE_HOSTS = (
+        (IMGUR, 'imgur'),
+        (REDDIT, 'i.redd.it'),
+    )
     sheet_id = models.CharField(max_length=100)
     range_def = models.CharField(max_length=100)
     last_updated = models.DateTimeField()
@@ -75,6 +82,7 @@ class Settings(models.Model):
     imgur_template = models.CharField(max_length=200, default='imgur')
     imgur_album_template = models.CharField(max_length=200, default='imgur_album')
     draft_year = models.IntegerField(default=2019)
+    image_host = models.CharField(max_length=10, choices=IMAGE_HOSTS)
 
 
 class Priority(models.Model):

@@ -1,0 +1,177 @@
+body {
+	margin: 0;
+	background: #f3edda;
+}
+.card {
+	position: relative;
+	display: block;
+    width: 1421px;
+    height: 900px;
+	background-color: #f3edda;
+}
+.card .full-bleed {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-position: center;
+	background-size: cover;
+}
+.group {
+	mix-blend-mode: multiply;
+}
+.noise {
+	z-index: 4;
+	mix-blend-mode: screen;
+    opacity: 1.0;
+}
+.draft-position {
+    font-family: "Collegiate Black FLF";
+    color: #fff;
+    position: absolute;
+    font-size: 170%;
+    top: 1.9%;
+    right: 53.5%;
+    z-index: 3;
+    filter: blur(0.015em);
+    opacity: 0.9;
+}
+.draft-position .round {
+    margin-right: 0.7em;
+}
+.nameplate, .position, .random-fact {
+    -webkit-font-smoothing: antialiased;
+	position: absolute;
+	z-index: 3;
+    transform: skew(0deg, -7.8deg);
+    transform-origin: left;
+    font-family: "Benguiat Bold";
+    opacity: 0.9;
+}
+.nameplate {
+    bottom: 4.8%;
+    left: 3.5%;
+    font-size: 46px;
+    letter-spacing: -.05em;
+	color: #fff;
+	height: 60px;
+    width: 625px;
+}
+.inner-nameplate {
+	position: absolute;
+    white-space: nowrap;
+    filter: blur(.25px);
+}
+.position {
+    bottom: 6%;
+    left: 26%;
+    font-size: 25px;
+    letter-spacing: -.05em;
+    color: #223;
+    right: 51%;
+    overflow: hidden;
+    white-space: nowrap;
+    filter: blur(.15px);
+}
+.card-base {
+	z-index: 2;
+	background-size: contain;
+}
+.player {
+	position: absolute;
+    top: 6%;
+    bottom: 11.5%;
+    left: 3.3%;
+	z-index: 1;
+    width: 43.3%;
+	background-size: cover;
+}
+.player.effect {
+    mix-blend-mode: exclusion;
+    opacity: .1;
+    transform: translate(1px, 1px);
+}
+.random-fact {
+    font-size: 175%;
+    top: 37%;
+    left: 60%;
+    color: #fff;
+    right: 10.3%;
+    bottom: 46%;
+    overflow: hidden;
+    text-align: center;
+    filter: blur(.35px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.stats
+
+/* First round cards get less noise and less blurry text */
+body.round-1 .noise { opacity: 0.4; }
+body.round-1 .draft-position { filter: blur(0.005em); }
+body.round-1 .inner-nameplate { filter: blur(.1px) }
+body.round-1 .position { filter: blur(.05px); }
+body.round-1 .random-fact { filter: blur(0.1px); }
+
+/* First round cards get gold leaf lettering */
+body.round-1 .inner-nameplate {
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 2px RGBA(16, 16, 16, 0.75);
+    -moz-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-stroke: 2px RGBA(16, 16, 16, 0.75);
+}
+
+/* Stats */
+.stats {
+    position: absolute;
+    left: 55.5%;
+    right: 6%;
+    top: 62.5%;
+    bottom: 11.5%;
+    z-index: 3;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.9);
+        font-family: "Helvetica Inserat LT Std", sans-serif;
+    font-size: 95%;
+	text-transform: uppercase;
+	color: #fff;
+    filter: blur(.35px);
+}
+.stats-contain {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 16px 0 0;
+}
+.stat {
+	box-sizing: border-box;
+    display: flex;
+	flex-grow: 1;
+	align-items: center;
+	justify-content: space-around;
+    width: 50%;
+	padding: 0 20px;
+	margin-bottom: 20px;
+	letter-spacing: .05em;
+    text-align: center;
+}
+.stat .header {
+	font-weight: bold;
+	padding-right: 10px;
+}
+.stat .spacer {
+	display: block;
+	flex-grow: 2;
+	width: auto;
+	height: 2px;
+	border-top: #fff dashed 2px;
+	opacity: .6;
+}
+.stat .number {
+	padding-left: 10px;
+}
+
+/* Some debug background colors for stats */
