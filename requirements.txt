@@ -28,7 +28,7 @@ pyparsing==2.4.0
 pyppeteer==0.0.25
 pytz==2019.1
 requests==2.21.0
-rsa==4.0
+rsa==4.1
 selenium==3.141.0
 six==1.10.0
 soupsieve==1.9
