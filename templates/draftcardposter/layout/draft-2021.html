@@ -2,8 +2,8 @@
 {% load draftcard_extras %}
 {% random_int 0 100 as shiny %}
 {% if shiny > 95 %}
-    {% include "draftcardposter/layout/draft-2020/card.html" with extraclass="shiny" %}
+    {% include "draftcardposter/layout/draft-2021/card.html" with extraclass="shiny" %}
 {% else %}
-    {% include "draftcardposter/layout/draft-2020/card.html" with extraclass="" %}
+    {% include "draftcardposter/layout/draft-2021/card.html" with extraclass="" %}
 {% endif %}
 

@@ -23,85 +23,85 @@
     <meta name="msapplication-TileImage" content="{% static 'draftcardposter/icon/ms-icon-144x144.png' %}">
     <meta name="theme-color" content="#ffffff">
 
-    <title>{{ p }} | 2020 r/nfl Draft Card</title>
+    <title>{{ p }} | 2021 r/nfl Draft Card</title>
 
     <style type="text/css">
         @font-face {
             font-family: "Benguiat Bold";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/benguiat_bold.woff2' %}") format("woff2"),
-                 url("{% static 'draftcardposter/draft-2020/assets/fonts/benguiat_bold.woff' %}") format("woff"),
-                 url("{% static 'draftcardposter/draft-2020/assets/fonts/benguiat_bold.ttf' %}") format("truetype"),
-                 url("{% static 'draftcardposter/draft-2020/assets/fonts/benguiat_bold.otf' %}") format("opentype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/benguiat_bold.woff2' %}") format("woff2"),
+                 url("{% static 'draftcardposter/draft-2021/assets/fonts/benguiat_bold.woff' %}") format("woff"),
+                 url("{% static 'draftcardposter/draft-2021/assets/fonts/benguiat_bold.ttf' %}") format("truetype"),
+                 url("{% static 'draftcardposter/draft-2021/assets/fonts/benguiat_bold.otf' %}") format("opentype");
             font-style:normal;
             font-weight:400;
         }
 
         @font-face {
             font-family: "Collegiate Black FLF";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/_01CollegiateBlackFLF.ttf' %}") format("truetype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/_01CollegiateBlackFLF.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 200;
         }
 
         @font-face {
             font-family: "Dosis Bold";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-Bold.ttf' %}") format("truetype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-Bold.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
         @font-face {
             font-family: "Dosis Book";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-Book.ttf' %}") format("truetype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-Book.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
         @font-face {
             font-family: "Dosis ExtraBold";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-ExtraBold.ttf' %}") format("truetype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-ExtraBold.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
         @font-face {
             font-family: "Dosis ExtraLight";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-ExtraLight.ttf' %}") format("truetype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-ExtraLight.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
         @font-face {
             font-family: "Dosis Light";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-Light.ttf' %}") format("truetype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-Light.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
         @font-face {
             font-family: "Dosis Medium";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-Medium.ttf' %}") format("truetype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-Medium.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
         @font-face {
             font-family: "Dosis SemiBold";
-            src: url("{% static 'draftcardposter/draft-2020/assets/fonts/Dosis-SemiBold.ttf' %}") format("truetype");
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-SemiBold.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
 
         body.round-1 .inner-nameplate {
-            background-image: url("{% static "draftcardposter/draft-2020/assets/img/goldleaf.jpg" %}");
+            background-image: url("{% static "draftcardposter/draft-2021/assets/img/goldleaf.jpg" %}");
             background-size: cover;
         }
 
         {% for short, team in teams %}
-        {% with 'draftcardposter/draft-2020/assets/img/'|add:team.mascot|lower|add:'.png' as bg %}
+        {% with 'draftcardposter/draft-2021/assets/img/'|add:team.mascot|lower|add:'.png' as bg %}
         .team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
         {% endwith %}
-        {% with 'draftcardposter/draft-2020/assets/img/Round 1/r1'|add:team.mascot|lower|add:'.png' as bg %}
+        {% with 'draftcardposter/draft-2021/assets/img/Round 1/r1'|add:team.mascot|lower|add:'.png' as bg %}
         .round-1.team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
         {% endwith %}
         {% endfor %}
     </style>
     
-    <link rel="stylesheet" href="{% static 'draftcardposter/draft-2020/assets/css/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'draftcardposter/draft-2021/assets/css/styles.css' %}"/>
 
   </head>
   <body class="team-{{ team.mascot|lower }} round-{{ round }}" data-overall="{{ overall }}">
@@ -114,7 +114,7 @@
               <span class="pick">Pick {{ pick }}</span>
           </div>
           <div class="position">{{ position_long|lower }}</div>
-          <div class="noise full-bleed" style="background-image: url('{% static 'draftcardposter/draft-2020/assets/img/01_noise.png' %}')"></div>
+          <div class="noise full-bleed" style="background-image: url('{% static 'draftcardposter/draft-2021/assets/img/01_noise.png' %}')"></div>
           <div class="card-base full-bleed"></div>
           <div class="player" style="background-image: url('{% static photo %}')"></div>
           <div class="player effect" style="background-image: url('{% static photo %}')"></div>
@@ -179,7 +179,7 @@
             </div>
           </div>
 	  </div>
-    <script src="{% static 'draftcardposter/draft-2020/assets/js/app.js' %}"></script>
-    <script src="{% static 'draftcardposter/draft-2020/assets/js/factoid.js' %}"></script>
+    <script src="{% static 'draftcardposter/draft-2021/assets/js/app.js' %}"></script>
+    <script src="{% static 'draftcardposter/draft-2021/assets/js/factoid.js' %}"></script>
   </body>
 </html>
