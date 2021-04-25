@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
 from urllib.request import urlopen
-import pprint
 from draftcardposter.models import Player
 from django.urls import reverse
 from redditnfl.nfltools import nflteams
@@ -40,15 +39,19 @@ class Command(BaseCommand):
         
         for p in players:
             if ranks and rank(p) not in ranks:
+                print("Skipping player with rank %s" % (rank(p), ranks))
                 continue
-            if not p.name:
+            if not p.name or not p.data['GAMES_PLAYED']:
+                print("Skipping TBD player %s" % p)
                 continue
+            print("Doing %s" % p)
             team = nflteams.get_team(next(filter(lambda x: x[1]==p.data['TEAM'], nflteams.fullnames.items()))[0])
             url = base_url + reverse('player-card', kwargs={'overall':1, 'team':team['short'], 'pos':p.position, 'name':p.name, 'college': p.college, 'fmt':'png'})
             fn = output_dir / Path("{rank:03d} {p.name}.png".format(p=p, rank=rank(p)))
             if fn.exists():
+                print("    %s exists, skipping" % fn)
                 continue
             with open(fn, 'wb') as out:
-                print(url)
+                print("  %s" % url)
                 out.write(urlopen(url).read())
                 print(" -> %s" % fn)
