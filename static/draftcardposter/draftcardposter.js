@@ -29,6 +29,7 @@ $(document).ready(function() {
                     if (pick[1] == "c") text += " (comp)";
                     if (pick[1] == "M") text += " (moved)";
                     if (pick[1] == "X") text += " (forfeited)";
+                    if (pick[1] == "j") text += " (JC-2A)";
                     var attrs = { value: pick[0], text: text}
                     if (this.value == nextRound && pick[0] == nextPick) {
                         attrs.selected = 'selected';

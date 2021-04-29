@@ -78,7 +78,28 @@ class MissingPhotos(generic.TemplateView):
         context['surplus'] = surplus
         return add_common_context(context)
 
+@method_decorator(last_modified(latest_update), name='dispatch')
+class HasPhoto(generic.DetailView):
+    model = Player
+    context_object_name = 'player'
 
+    def get_object(self, *args, **kwargs):
+        for player in self.get_queryset():
+            if player.data and player.data.get('ds.playerid', False) == self.kwargs.get('dsplayerid', None):
+                print(player)
+                settings = Settings.objects.all()[0]
+                playerimgs = 'draftcardposter/' + settings.layout + '/playerimgs'
+                if 'filename' in player.data:
+                    photo = playerimgs + '/' + player.data['filename'] + '.jpg'
+                    print("Filename: %s" % photo)
+                    found = finders.find(photo)
+                    print("Found: %r" % found)
+                    return found is None
+        raise http.Http404("Player does not exist")
+
+    def get(self, *args, **kwargs):
+        obj = self.get_object()
+        return http.HttpResponse('<?xml version="1.0" encoding="UTF-8"?>'+"\n"+'<HasPhoto>%s</HasPhoto>' % obj, content_type='text/xml')
 
 @method_decorator(last_modified(latest_update), name='dispatch')
 class PlayerList(AJAXListMixin, generic.ListView):
@@ -287,8 +308,8 @@ class PreviewPost(View):
         pick_type = draft.pick_type(settings.draft_year, int(context['round']), int(context['pick']))
         if pick_type and pick_type in (draft.FORFEITED, draft.UNKNOWN, draft.MOVED):
             context['msgs'].append(('warning', 'I don\'t think round {round} has a pick #{pick}. Are you sure? It has either been forfeited, moved or something else. This will probably mess up the overall pick.'.format(**context)))
-        elif pick_type and pick_type == draft.COMP:
-            context['msgs'].append(('info', 'This is a compensatory pick. Just so you\'re aware'))
+        elif pick_type and pick_type in (draft.COMP, draft.JC2A):
+            context['msgs'].append(('info', 'This is a compensatory or JC-2A pick. Just so you\'re aware'))
         
         url = reverse('player-card', kwargs={'overall':overall, 'team':team['short'], 'pos':context['position'], 'name':context['name'], 'college':context['college'], 'fmt':'png'})
         fullurl = request.build_absolute_uri(url)
