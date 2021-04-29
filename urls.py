@@ -25,8 +25,10 @@ urlpatterns = [
     url(r'^player/(?P<pk>[0-9]+)$', views.PlayerDetail.as_view(), name='player-detail'),
     url(r'^cards/(?P<overall>[0-9]+)/(?P<team>[A-Z]{2,3})/(?P<name>[^,]+),(?P<pos>[A-Z34\- ]{1,7}),(?P<college>.*)\.(?P<fmt>html|png)$', views.PlayerCard.as_view(), name='player-card'),
     url(r'^hasphoto/(?P<dsplayerid>[0-9]+)$', views.HasPhoto.as_view(), name='has-photo'),
+    url(r'^photo_exists/(?P<filename>[a-z_]+)$', views.PhotoExists.as_view(), name='photo-exists'),
     url(r'^random', views.RandomCard.as_view(), name='random-card'),
     url(r'^submit$', views.SubmitView.as_view(), name='submit-pick'),
     url('^missingphotos', views.MissingPhotos.as_view(), name='missing-photos'),
+    url('^missingcsv', views.MissingCsv.as_view(), name='missing-csv'),
     url(r'^$', views.IndexView.as_view(), name='index'),
 ]

@@ -23,7 +23,7 @@
         <td data-value="{{ player.position }}">{{ player.position }}</td>
         <td data-value="{{ player.college }}">{{ player.college }}</td>
         <td data-value="{{ player.data.filename }}">{{ player.data.filename }}</td>
-        <td data-value="{{ player.data.buzzscore }}">{{ player.data.buzzscore }}</td>
+        <td data-value="{{ player.data.buzzscore }}">{{ player.data.buzzscore_rel }}</td>
         <td data-value="{{ player.data|get_key:'draft.overall' }}">{% if player.data|get_key:'draft.overall' %}{{ player.data|get_key:'draft.overall' }} ({{ player.data|get_key:'draft.round' }}.{{ player.data|get_key:'draft.pick' }}){% endif %}</td>
     </tr>
 {% endfor %}

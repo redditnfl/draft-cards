@@ -1,6 +1,7 @@
 import glob
 from pathlib import Path
 import asyncio
+import csv
 
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -75,8 +76,43 @@ class MissingPhotos(generic.TemplateView):
             for f in map(Path, glob.glob("%s/*.jpg" % d)):
                 if f.stem not in all_imgs:
                     surplus.append(f)
-        context['surplus'] = surplus
+        context['surplus'] = sorted(surplus)
         return add_common_context(context)
+
+
+class MissingCsv(generic.ListView):
+    model = Player
+    context_object_name = 'players'
+
+    def get(self, *args, **kwargs):
+        settings = Settings.objects.all()[0]
+        
+        response = http.HttpResponse(content_type='text/plain')
+        writer = csv.DictWriter(response, ['ds.playerid', 'name', 'position', 'college', 'filename', 'buzz', 'photo_found'])
+        writer.writeheader()
+        for player in self.get_queryset():
+            photo = 'draftcardposter/' + Settings.objects.all()[0].layout + '/playerimgs/' + player.data['filename'] + '.jpg'
+            found = finders.find(photo) is not None
+            writer.writerow({
+                'ds.playerid': player.data.get('ds.playerid', '0'),
+                'name': player.name,
+                'position': player.position,
+                'college': player.college,
+                'filename': player.data.get('filename', ''),
+                'buzz': player.data.get('buzzscore_rel', ''),
+                'photo_found': found,
+                })
+        return response
+
+
+class PhotoExists(View):
+    def get(self, *args, **kwargs):
+        settings = Settings.objects.all()[0]
+        photo = 'draftcardposter/%s/playerimgs/%s.jpg' % (settings.layout, self.kwargs.get('filename', 'xyzzy'))
+        found = finders.find(photo)
+        obj = found is not None
+        return http.HttpResponse('<?xml version="1.0" encoding="UTF-8"?>'+"\n"+'<HasPhoto>%s</HasPhoto>' % obj, content_type='text/xml')
+
 
 @method_decorator(last_modified(latest_update), name='dispatch')
 class HasPhoto(generic.DetailView):
@@ -86,15 +122,12 @@ class HasPhoto(generic.DetailView):
     def get_object(self, *args, **kwargs):
         for player in self.get_queryset():
             if player.data and player.data.get('ds.playerid', False) == self.kwargs.get('dsplayerid', None):
-                print(player)
                 settings = Settings.objects.all()[0]
                 playerimgs = 'draftcardposter/' + settings.layout + '/playerimgs'
                 if 'filename' in player.data:
                     photo = playerimgs + '/' + player.data['filename'] + '.jpg'
-                    print("Filename: %s" % photo)
                     found = finders.find(photo)
-                    print("Found: %r" % found)
-                    return found is None
+                    return found is not None
         raise http.Http404("Player does not exist")
 
     def get(self, *args, **kwargs):
@@ -264,7 +297,7 @@ class SubmitView(View):
     def submit_img_to_reddit_as_pic(self, srname, title, fn):
         r = Reddit('draftcardposter')
         sub = r.subreddit(srname)
-        return sub.submit_image(title, fn)
+        return sub.submit_image(title, fn, timeout=60)
 
     def post_to_live_thread(self, live_thread_id, body):
         r = Reddit('draftcardposter')
