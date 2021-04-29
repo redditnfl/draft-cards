@@ -21,13 +21,8 @@ body {
 .group {
 	mix-blend-mode: multiply;
 }
-.noise {
-	z-index: 4;
-	mix-blend-mode: screen;
-    opacity: 1.0;
-}
 .draft-position {
-    font-family: "Collegiate Black FLF";
+    font-family: "Industry Black";
     color: #fff;
     position: absolute;
     font-size: 170%;
@@ -40,40 +35,61 @@ body {
 .draft-position .round {
     margin-right: 0.7em;
 }
-.nameplate, .position, .random-fact {
+.nameplate, .position {
     -webkit-font-smoothing: antialiased;
 	position: absolute;
+	z-index: 5;
+    font-family: "Industry Bold";
+    opacity: 0.9;
+}
+.random-fact {
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
 	z-index: 3;
-    transform: skew(0deg, -7.8deg);
-    transform-origin: left;
-    font-family: "Benguiat Bold";
+    font-family: "Avenir Heavy";
     opacity: 0.9;
 }
 .nameplate {
-    bottom: 4.8%;
-    left: 3.5%;
+    bottom: 8.3%;
+    left: 10.7%;
     font-size: 46px;
     letter-spacing: -.05em;
 	color: #fff;
 	height: 60px;
-    width: 625px;
+    width: 550px;
 }
 .inner-nameplate {
 	position: absolute;
     white-space: nowrap;
     filter: blur(.25px);
 }
+.school {
+    z-index: 4;
+    position: absolute;
+    font-family: "Industry Book";
+    font-size: 36px;
+    bottom: 4.0%;
+    left: 10.7%;
+    color: #fff;
+}
 .position {
-    bottom: 6%;
-    left: 26%;
-    font-size: 25px;
+    top: 2.7%;
+    left: 2.8%;
+    font-size: 150px;
     letter-spacing: -.05em;
-    color: #223;
+    color: #fff;
     right: 51%;
     overflow: hidden;
     white-space: nowrap;
-    filter: blur(.15px);
+    filter: blur(.15px) drop-shadow(1px 1px 0 #111);
+    color: transparent;
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: #fff;
+    -moz-text-stroke-width: 1.5px;
+    -moz-text-stroke-color: #fff;
 }
+.position-WR { left: 3.4%; }
+.position-TE { left: 3.3%; }
 .card-base {
 	z-index: 2;
 	background-size: contain;
@@ -89,27 +105,27 @@ body {
 }
 .player.effect {
     mix-blend-mode: exclusion;
-    opacity: .1;
+    opacity: .0;
     transform: translate(1px, 1px);
 }
 .random-fact {
-    font-size: 175%;
-    top: 37%;
+    font-size: 200%;
+    top: 29%;
     left: 60%;
     color: #fff;
-    right: 10.3%;
-    bottom: 46%;
+    right: 9.5%;
+    bottom: 47.3%;
     overflow: hidden;
     text-align: center;
     filter: blur(.35px);
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0.5% 1.5%;
+    line-height: 1.1;
 }
-.stats
 
 /* First round cards get less noise and less blurry text */
-body.round-1 .noise { opacity: 0.4; }
 body.round-1 .draft-position { filter: blur(0.005em); }
 body.round-1 .inner-nameplate { filter: blur(.1px) }
 body.round-1 .position { filter: blur(.05px); }
@@ -119,10 +135,11 @@ body.round-1 .random-fact { filter: blur(0.1px); }
 body.round-1 .inner-nameplate {
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
-    -webkit-text-stroke: 2px RGBA(16, 16, 16, 0.75);
+    -webkit-text-stroke: 1px RGBA(255, 255, 255, 0.75);
     -moz-text-fill-color: transparent;
     -moz-background-clip: text;
-    -moz-text-stroke: 2px RGBA(16, 16, 16, 0.75);
+    -moz-text-stroke: 1px RGBA(255, 255, 255, 0.75);
+    letter-spacing: 0;
 }
 
 /* Stats */
@@ -134,17 +151,20 @@ body.round-1 .inner-nameplate {
     bottom: 11.5%;
     z-index: 3;
     overflow: hidden;
-    color: rgba(255, 255, 255, 0.9);
-        font-family: "Helvetica Inserat LT Std", sans-serif;
-    font-size: 95%;
+    color: rgba(255, 255, 255, 0.99);
+    font-family: "Industry Book";
+    font-size: 125%;
 	text-transform: uppercase;
 	color: #fff;
-    filter: blur(.35px);
+    filter: blur(.15px);
 }
 .stats-contain {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 16px 0 0;
+}
+.team-logo {
+    z-index: 10;
 }
 .stat {
 	box-sizing: border-box;
@@ -173,5 +193,3 @@ body.round-1 .inner-nameplate {
 .stat .number {
 	padding-left: 10px;
 }
-
-/* Some debug background colors for stats */

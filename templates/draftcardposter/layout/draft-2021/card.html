@@ -37,53 +37,31 @@
         }
 
         @font-face {
-            font-family: "Collegiate Black FLF";
-            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/_01CollegiateBlackFLF.ttf' %}") format("truetype");
+            font-family: "Avenir Heavy";
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/AvenirHeavy.ttf' %}") format("truetype");
             font-style:normal;
-            font-weight: 200;
+            font-weight: 400;
         }
 
         @font-face {
-            font-family: "Dosis Bold";
-            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-Bold.ttf' %}") format("truetype");
+            font-family: "Industry Bold";
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Industry-Bold.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
+
         @font-face {
-            font-family: "Dosis Book";
-            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-Book.ttf' %}") format("truetype");
+            font-family: "Industry Black";
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Industry-Black.ttf' %}") format("truetype");
             font-style:normal;
             font-weight: 400;
         }
+
         @font-face {
-            font-family: "Dosis ExtraBold";
-            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-ExtraBold.ttf' %}") format("truetype");
+            font-family: "Industry Book";
+            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Industry-Book.ttf' %}") format("truetype");
             font-style:normal;
-            font-weight: 400;
-        }
-        @font-face {
-            font-family: "Dosis ExtraLight";
-            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-ExtraLight.ttf' %}") format("truetype");
-            font-style:normal;
-            font-weight: 400;
-        }
-        @font-face {
-            font-family: "Dosis Light";
-            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-Light.ttf' %}") format("truetype");
-            font-style:normal;
-            font-weight: 400;
-        }
-        @font-face {
-            font-family: "Dosis Medium";
-            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-Medium.ttf' %}") format("truetype");
-            font-style:normal;
-            font-weight: 400;
-        }
-        @font-face {
-            font-family: "Dosis SemiBold";
-            src: url("{% static 'draftcardposter/draft-2021/assets/fonts/Dosis-SemiBold.ttf' %}") format("truetype");
-            font-style:normal;
-            font-weight: 400;
+            font-weight: 200;
         }
 
         body.round-1 .inner-nameplate {
@@ -91,12 +69,11 @@
             background-size: cover;
         }
 
+        .card-base { background-image: url("{% static 'draftcardposter/draft-2021/assets/img/base.png' %}"); }
+
         {% for short, team in teams %}
-        {% with 'draftcardposter/draft-2021/assets/img/'|add:team.mascot|lower|add:'.png' as bg %}
-        .team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
-        {% endwith %}
-        {% with 'draftcardposter/draft-2021/assets/img/Round 1/r1'|add:team.mascot|lower|add:'.png' as bg %}
-        .round-1.team-{{ team.mascot|lower }} .card-base { background-image: url("{% static bg %}"); }
+        {% with 'draftcardposter/draft-2021/assets/img/logo-overlay/'|add:team.short|add:'.png' as logo %}
+        .team-{{ team.short|upper }} .team-logo { background-image: url("{% static logo %}"); }
         {% endwith %}
         {% endfor %}
     </style>
@@ -104,17 +81,20 @@
     <link rel="stylesheet" href="{% static 'draftcardposter/draft-2021/assets/css/styles.css' %}"/>
 
   </head>
-  <body class="team-{{ team.mascot|lower }} round-{{ round }}" data-overall="{{ overall }}">
+  <body class="team-{{ team.short|upper }} round-{{ round }}" data-overall="{{ overall }}">
 	  <div class="card">
           <div class="nameplate">
-              <div class="inner-nameplate">{{ firstname }} {{ lastname }}</div>
+              <div class="inner-nameplate">{{ firstname|upper }} {{ lastname|upper }}</div>
+          </div>
+          <div class="school">
+              {{ college|upper }}
           </div>
           <div class="draft-position">
               <span class="round">Round {{ round }}</span>
               <span class="pick">Pick {{ pick }}</span>
           </div>
-          <div class="position">{{ position_long|lower }}</div>
-          <div class="noise full-bleed" style="background-image: url('{% static 'draftcardposter/draft-2021/assets/img/01_noise.png' %}')"></div>
+          <div class="position position-{{ position|upper }}">{{ position|upper }}</div>
+          <div class="team-logo full-bleed"></div>
           <div class="card-base full-bleed"></div>
           <div class="player" style="background-image: url('{% static photo %}')"></div>
           <div class="player effect" style="background-image: url('{% static photo %}')"></div>
@@ -165,7 +145,7 @@
             {% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}
             <div class="stat">
               <div class="header">
-                {{ stat|statname:value }}{% if type_ %} ({{ type_ }}){% endif %}
+                {{ stat|statname:value }}{% if False and type_ %} ({{ type_ }}){% endif %}
               </div>
               <div class="spacer"></div>
               <div class="number">
