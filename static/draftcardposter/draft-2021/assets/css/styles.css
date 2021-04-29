@@ -153,7 +153,7 @@ body.round-1 .inner-nameplate {
     overflow: hidden;
     color: rgba(255, 255, 255, 0.99);
     font-family: "Industry Book";
-    font-size: 125%;
+    font-size: 120%;
 	text-transform: uppercase;
 	color: #fff;
     filter: blur(.15px);
