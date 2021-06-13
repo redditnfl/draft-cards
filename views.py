@@ -88,7 +88,7 @@ class MissingCsv(generic.ListView):
         settings = Settings.objects.all()[0]
         
         response = http.HttpResponse(content_type='text/plain')
-        writer = csv.DictWriter(response, ['ds.playerid', 'name', 'position', 'college', 'filename', 'buzz', 'photo_found'])
+        writer = csv.DictWriter(response, ['ds.playerid', 'name', 'position', 'college', 'jersey', 'filename', 'buzz', 'draft.overall', 'photo_found'])
         writer.writeheader()
         for player in self.get_queryset():
             photo = 'draftcardposter/' + Settings.objects.all()[0].layout + '/playerimgs/' + player.data['filename'] + '.jpg'
@@ -98,8 +98,10 @@ class MissingCsv(generic.ListView):
                 'name': player.name,
                 'position': player.position,
                 'college': player.college,
+                'jersey': player.data.get('ds.jersey', ''),
                 'filename': player.data.get('filename', ''),
                 'buzz': player.data.get('buzzscore_rel', ''),
+                'draft.overall': player.data.get('draft.overall', ''),
                 'photo_found': found,
                 })
         return response
