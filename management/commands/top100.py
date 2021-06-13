@@ -39,7 +39,7 @@ class Command(BaseCommand):
         
         for p in players:
             if ranks and rank(p) not in ranks:
-                print("Skipping player with rank %s" % (rank(p), ranks))
+                print("Skipping player with rank %s (%r)" % (rank(p), ranks))
                 continue
             if not p.name or not p.data['GAMES_PLAYED']:
                 print("Skipping TBD player %s" % p)
