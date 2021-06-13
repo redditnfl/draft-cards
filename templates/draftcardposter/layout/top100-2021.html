@@ -1,0 +1,9 @@
+{% load static %}
+{% load draftcard_extras %}
+{% random_int 0 100 as shiny %}
+{% if shiny > 95 %}
+    {% include "draftcardposter/layout/top100-2021/card.html" with extraclass="shiny" %}
+{% else %}
+    {% include "draftcardposter/layout/top100-2021/card.html" with extraclass="" %}
+{% endif %}
+
