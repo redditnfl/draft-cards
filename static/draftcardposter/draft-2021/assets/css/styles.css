@@ -56,7 +56,7 @@ body {
     letter-spacing: -.05em;
 	color: #fff;
 	height: 60px;
-    width: 550px;
+    width: 505px;
 }
 .inner-nameplate {
 	position: absolute;
@@ -128,7 +128,7 @@ body {
 /* First round cards get less noise and less blurry text */
 body.round-1 .draft-position { filter: blur(0.005em); }
 body.round-1 .inner-nameplate { filter: blur(.1px) }
-body.round-1 .position { filter: blur(.05px); }
+body.round-1 .position { filter: blur(.05px) drop-shadow(1px 1px 0 #111); }
 body.round-1 .random-fact { filter: blur(0.1px); }
 
 /* First round cards get gold leaf lettering */
