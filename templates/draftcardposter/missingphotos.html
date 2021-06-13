@@ -15,15 +15,15 @@
         cursor: pointer;
     }
 </style>
-<table class="table table-hover table-condensed" id="missinglist"><thead><tr><th>Name</th><th>Position</th><th>College</th><th>Filename</th><th>Buzz</th><th>Draft position</th></tr></thead>
+<table class="table table-hover table-condensed" id="missinglist"><thead><tr><th>Name</th><th>Position</th><th>College (jersey)</th><th>Filename</th><th>Buzz</th><th>Draft position</th></tr></thead>
 <tbody>
 {% for player in missing %}
     <tr>
         <td data-value="{{ player.name }}" >{{ player.name }}</td>
         <td data-value="{{ player.position }}">{{ player.position }}</td>
-        <td data-value="{{ player.college }}">{{ player.college }}</td>
+        <td data-value="{{ player.college }}">{{ player.college }} (#{{ player.data|get_key:'ds.jersey' }})</td>
         <td data-value="{{ player.data.filename }}">{{ player.data.filename }}</td>
-        <td data-value="{{ player.data.buzzscore }}">{{ player.data.buzzscore }}</td>
+        <td data-value="{{ player.data.buzzscore }}">{{ player.data.buzzscore_rel }}</td>
         <td data-value="{{ player.data|get_key:'draft.overall' }}">{% if player.data|get_key:'draft.overall' %}{{ player.data|get_key:'draft.overall' }} ({{ player.data|get_key:'draft.round' }}.{{ player.data|get_key:'draft.pick' }}){% endif %}</td>
     </tr>
 {% endfor %}

@@ -31,7 +31,7 @@ class DraftCards:
         self.sheet_id = sheet_id
         self.range_def = range_def
         self.template = template
-        self.sheet = GoogleSheetsData(sheet_id)
+        self.sheet = GoogleSheetsData(sheet_id, parseargs=False)
         self.sshot = Screenshot(300, 400)
         self.render = Render()
 

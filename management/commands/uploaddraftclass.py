@@ -29,6 +29,15 @@ class Command(BaseCommand):
         drafted = filter(drafted_player, Player.objects.all())
         draft_class = sorted(drafted, key = draft_position)
 
+        lastovr = 0
+        for p in draft_class:
+            rnd, pick = draft_position(p)
+            ovr = draft.overall(year, rnd, pick)
+            print("%s\t%s\t%s\t%s" % (ovr, rnd, pick, p.name))
+            if ovr != lastovr + 1:
+                raise Exception("Gap in draft class at %d - %d" % (lastovr, ovr))
+            lastovr = ovr
+
         lastrnd = 0
         album = None
         albums = {}
