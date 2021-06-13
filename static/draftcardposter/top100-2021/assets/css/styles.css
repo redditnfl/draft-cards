@@ -29,7 +29,7 @@ body {
     top: 1.9%;
     right: 53.5%;
     z-index: 3;
-    filter: blur(0.015em);
+    filter: blur(0.005em);
     opacity: 0.9;
 }
 .draft-position .round {
@@ -61,7 +61,7 @@ body {
 .inner-nameplate {
 	position: absolute;
     white-space: nowrap;
-    filter: blur(.25px);
+    filter: blur(.1px);
 }
 .school {
     z-index: 4;
@@ -81,7 +81,7 @@ body {
     right: 51%;
     overflow: hidden;
     white-space: nowrap;
-    filter: blur(.15px) drop-shadow(1px 1px 0 #111);
+    filter: blur(.05px) drop-shadow(1px 1px 0 #111);
     color: transparent;
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: #fff;
@@ -102,6 +102,7 @@ body {
 	z-index: 1;
     width: 43.3%;
 	background-size: cover;
+    background-position: center;
 }
 .player.effect {
     mix-blend-mode: exclusion;
@@ -117,29 +118,12 @@ body {
     bottom: 47.3%;
     overflow: hidden;
     text-align: center;
-    filter: blur(.35px);
+    filter: blur(.1px);
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0.5% 1.5%;
     line-height: 1.1;
-}
-
-/* First round cards get less noise and less blurry text */
-body.round-1 .draft-position { filter: blur(0.005em); }
-body.round-1 .inner-nameplate { filter: blur(.1px) }
-body.round-1 .position { filter: blur(.05px) drop-shadow(1px 1px 0 #111); }
-body.round-1 .random-fact { filter: blur(0.1px); }
-
-/* First round cards get gold leaf lettering */
-body.round-1 .inner-nameplate {
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    -webkit-text-stroke: 1px RGBA(255, 255, 255, 0.75);
-    -moz-text-fill-color: transparent;
-    -moz-background-clip: text;
-    -moz-text-stroke: 1px RGBA(255, 255, 255, 0.75);
-    letter-spacing: 0;
 }
 
 /* Stats */
