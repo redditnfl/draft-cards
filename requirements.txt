@@ -40,7 +40,7 @@ twitter==1.18.0
 tzlocal==1.5.1
 update-checker==0.16
 uritemplate==3.0.0
-urllib3==1.26.4
+urllib3==1.26.5
 webencodings==0.5.1
 websocket-client==0.56.0
 websockets==8.1
