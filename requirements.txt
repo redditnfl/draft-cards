@@ -20,7 +20,7 @@ MarkupSafe==1.0
 -e git+https://git@github.com/redditnfl/nfltools.git@a3462bc#egg=nfltools
 oauth2client==4.0.0
 packaging==16.8
-praw==6.1.1
+praw==6.5.1
 prawcore==1.0.1
 protobuf==3.15.8
 pyasn1==0.4.8
