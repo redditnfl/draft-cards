@@ -46,6 +46,9 @@ def add_common_context(context):
 def latest_update(*args, **kwargs):
     return Settings.objects.all()[0].last_updated
 
+def buzz_sort(player):
+    return (0.0-float(player.data.get('buzzscore', 0.0)))
+
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.TemplateView):
     template_name = 'draftcardposter/index.html'
@@ -61,7 +64,7 @@ class MissingPhotos(generic.TemplateView):
         context = super(MissingPhotos, self).get_context_data(*args, **kwargs)
         missing = []
         all_imgs = set()
-        for player in Player.objects.all().order_by('name'):
+        for player in sorted(Player.objects.all(), key=buzz_sort):
             all_imgs.add(player.data['filename'])
             if player.data.get('buzzscore', '0') == '0' and not player.data.get('draft.overall') and not player.data.get('RANK'):
                 continue
@@ -90,7 +93,7 @@ class MissingCsv(generic.ListView):
         response = http.HttpResponse(content_type='text/plain')
         writer = csv.DictWriter(response, ['ds.playerid', 'name', 'position', 'college', 'jersey', 'filename', 'buzz', 'draft.overall', 'photo_found'])
         writer.writeheader()
-        for player in self.get_queryset():
+        for player in sorted(self.get_queryset(), key=buzz_sort):
             photo = 'draftcardposter/' + Settings.objects.all()[0].layout + '/playerimgs/' + player.data['filename'] + '.jpg'
             found = finders.find(photo) is not None
             writer.writerow({
