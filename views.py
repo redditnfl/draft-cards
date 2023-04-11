@@ -40,7 +40,8 @@ def add_common_context(context):
     context['teams'] = sorted(filter(lambda v: v[1]['short'] not in ('AFC', 'NFC'), nflteams.fullinfo.items()), key=lambda v: v[1]['mascot'])
     context['settings'] = settings
     context['msgs'] = []
-    context['next_pick'] = draft.round_pick(settings.draft_year, min(256, Settings.objects.all()[0].last_submitted_overall + 1))
+    lastpick = sum([sum([1 for pick in rd if pick[1] not in (draft.FORFEITED, draft.MOVED)]) for rd in draft.drafts[settings.draft_year]])
+    context['next_pick'] = draft.round_pick(settings.draft_year, min(lastpick, settings.last_submitted_overall + 1))
     return context
 
 def latest_update(*args, **kwargs):
