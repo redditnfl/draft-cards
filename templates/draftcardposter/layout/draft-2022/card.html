@@ -1,0 +1,165 @@
+{% load static %}
+{% load draftcard_extras %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'draftcardposter/icon/apple-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'draftcardposter/icon/apple-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'draftcardposter/icon/apple-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'draftcardposter/icon/apple-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'draftcardposter/icon/apple-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'draftcardposter/icon/apple-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'draftcardposter/icon/apple-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'draftcardposter/icon/apple-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'draftcardposter/icon/apple-icon-180x180.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'draftcardposter/icon/android-icon-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'draftcardposter/icon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'draftcardposter/icon/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'draftcardposter/icon/favicon-16x16.png' %}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{% static 'draftcardposter/icon/ms-icon-144x144.png' %}">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>{{ p }} | 2022 r/nfl Draft Card</title>
+
+    <style type="text/css">
+        @font-face {
+            font-family: "Benguiat Bold";
+            src: url("{% static 'draftcardposter/draft-2022/assets/fonts/benguiat_bold.woff2' %}") format("woff2"),
+                 url("{% static 'draftcardposter/draft-2022/assets/fonts/benguiat_bold.woff' %}") format("woff"),
+                 url("{% static 'draftcardposter/draft-2022/assets/fonts/benguiat_bold.ttf' %}") format("truetype"),
+                 url("{% static 'draftcardposter/draft-2022/assets/fonts/benguiat_bold.otf' %}") format("opentype");
+            font-style:normal;
+            font-weight:400;
+        }
+
+        @font-face {
+            font-family: "Avenir Heavy";
+            src: url("{% static 'draftcardposter/draft-2022/assets/fonts/AvenirHeavy.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: "Industry Bold";
+            src: url("{% static 'draftcardposter/draft-2022/assets/fonts/Industry-Bold.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: "Industry Black";
+            src: url("{% static 'draftcardposter/draft-2022/assets/fonts/Industry-Black.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: "Industry Book";
+            src: url("{% static 'draftcardposter/draft-2022/assets/fonts/Industry-Book.ttf' %}") format("truetype");
+            font-style:normal;
+            font-weight: 200;
+        }
+
+        body.round-1 .inner-nameplate {
+            background-image: url("{% static "draftcardposter/draft-2022/assets/img/goldleaf.jpg" %}");
+            background-size: cover;
+        }
+
+        .card-base { background-image: url("{% static 'draftcardposter/draft-2022/assets/img/base.png' %}"); }
+
+        {% for short, team in teams %}
+        {% with 'draftcardposter/draft-2022/assets/img/logo-overlay/'|add:team.short|add:'.png' as logo %}
+        .team-{{ team.short|upper }} .team-logo { background-image: url("{% static logo %}"); }
+        {% endwith %}
+        {% endfor %}
+    </style>
+    
+    <link rel="stylesheet" href="{% static 'draftcardposter/draft-2022/assets/css/styles.css' %}"/>
+
+  </head>
+  <body class="team-{{ team.short|upper }} round-{{ round }}" data-overall="{{ overall }}">
+	  <div class="card">
+          <div class="nameplate">
+              <div class="inner-nameplate">{{ firstname|upper }} {{ lastname|upper }}</div>
+          </div>
+          <div class="school">
+              {{ college|upper }}
+          </div>
+          <div class="draft-position">
+              <span class="round">Round {{ round }}</span>
+              <span class="pick">Pick {{ pick }}</span>
+          </div>
+          <div class="position position-{{ position|upper }}">{{ position|upper }}</div>
+          <div class="team-logo full-bleed"></div>
+          <div class="card-base full-bleed"></div>
+          <div class="player" style="background-image: url('{% static photo %}')"></div>
+          <div class="player effect" style="background-image: url('{% static photo %}')"></div>
+          <div class="random-fact"><span id="random-fact"></span></div>
+          <div class="stats">
+            <div class="stats-contain">
+
+            {% if p and p.data %}
+            <div class="stat">
+                <div class="header">Height</div>
+                <div class="spacer"></div>
+                <div class="number">{{ p.data.height_in|formatvalue:'height_in' }}</div>
+            </div>
+
+            <div class="stat">
+                <div class="header">Weight</div>
+                <div class="spacer"></div>
+                <div class="number">{{ p.data.weight_lbs|formatvalue:'weight_lbs' }}</div>
+            </div>
+
+          {% if p.data|substats:'cfb'|remove_zeroes:position|add_stats:position|length > 0 %}
+              {% for stat, value in p.data|substats:'cfb'|remove_zeroes:position|add_stats:position|cfb_sort:position|slice:"0:6" %}
+                <div class="stat">
+                  <div class="header">
+                    {{ stat|statname:value }}
+                  </div>
+                  <div class="spacer"></div>
+                  <div class="number">
+                    {{ value|formatvalue:stat }}
+                  </div>
+                </div>
+              {% endfor %}
+          {% elif p.data|substats:'xfl'|remove_zeroes:position|add_stats:position|length > 0 %}
+              {% for stat, value in p.data|substats:'xfl'|remove_zeroes:position|add_stats:position|cfb_sort:position|slice:"0:6" %}
+                <div class="stat">
+                  <div class="header">
+                    {{ stat|statname:value }}
+                  </div>
+                  <div class="spacer"></div>
+                  <div class="number">
+                    {{ value|formatvalue:stat }}
+                  </div>
+                </div>
+              {% endfor %}
+              {% else %}
+            {% endif %}
+
+            {% for type_, stat, value in p.data|order_stats:priorities|remove_non_stats:priorities|deduplicate:"combine,proday,None"|slice:"0:6" %}
+            <div class="stat">
+              <div class="header">
+                {{ stat|statname:value }}{% if False and type_ %} ({{ type_ }}){% endif %}
+              </div>
+              <div class="spacer"></div>
+              <div class="number">
+                {{ value|formatvalue:stat }}
+              </div>
+            </div>
+            {% endfor %}
+
+            {% endif %}
+
+            </div>
+          </div>
+	  </div>
+    <script src="{% static 'draftcardposter/draft-2022/assets/js/app.js' %}"></script>
+    <script src="{% static 'draftcardposter/draft-2022/assets/js/factoid.js' %}"></script>
+  </body>
+</html>
