@@ -1,0 +1,195 @@
+body {
+	margin: 0;
+	background: #f3edda;
+}
+.card {
+	position: relative;
+	display: block;
+    width: 1421px;
+    height: 900px;
+	background-color: #f3edda;
+}
+.card .full-bleed {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-position: center;
+	background-size: cover;
+}
+.group {
+	mix-blend-mode: multiply;
+}
+.draft-position {
+    font-family: "Industry Black";
+    color: #fff;
+    position: absolute;
+    font-size: 170%;
+    top: 1.9%;
+    right: 53.5%;
+    z-index: 3;
+    filter: blur(0.015em);
+    opacity: 0.9;
+}
+.draft-position .round {
+    margin-right: 0.7em;
+}
+.nameplate, .position {
+    -webkit-font-smoothing: antialiased;
+	position: absolute;
+	z-index: 5;
+    font-family: "Industry Bold";
+    opacity: 0.9;
+}
+.random-fact {
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+	z-index: 3;
+    font-family: "Avenir Heavy";
+    opacity: 0.9;
+}
+.nameplate {
+    bottom: 8.3%;
+    left: 10.7%;
+    font-size: 46px;
+    letter-spacing: -.05em;
+	color: #fff;
+	height: 60px;
+    width: 505px;
+}
+.inner-nameplate {
+	position: absolute;
+    white-space: nowrap;
+    filter: blur(.25px);
+}
+.school {
+    z-index: 4;
+    position: absolute;
+    font-family: "Industry Book";
+    font-size: 36px;
+    bottom: 4.0%;
+    left: 10.7%;
+    color: #fff;
+}
+.position {
+    top: 2.7%;
+    left: 2.8%;
+    font-size: 150px;
+    letter-spacing: -.05em;
+    color: #fff;
+    right: 51%;
+    overflow: hidden;
+    white-space: nowrap;
+    filter: blur(.15px) drop-shadow(1px 1px 0 #111);
+    color: transparent;
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: #fff;
+    -moz-text-stroke-width: 1.5px;
+    -moz-text-stroke-color: #fff;
+}
+.position-WR { left: 3.4%; }
+.position-TE { left: 3.3%; }
+.card-base {
+	z-index: 2;
+	background-size: contain;
+}
+.player {
+	position: absolute;
+    top: 6%;
+    bottom: 11.5%;
+    left: 3.3%;
+	z-index: 1;
+    width: 43.3%;
+	background-size: cover;
+}
+.player.effect {
+    mix-blend-mode: exclusion;
+    opacity: .0;
+    transform: translate(1px, 1px);
+}
+.random-fact {
+    font-size: 200%;
+    top: 29%;
+    left: 60%;
+    color: #fff;
+    right: 9.5%;
+    bottom: 47.3%;
+    overflow: hidden;
+    text-align: center;
+    filter: blur(.35px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5% 1.5%;
+    line-height: 1.1;
+}
+
+/* First round cards get less noise and less blurry text */
+body.round-1 .draft-position { filter: blur(0.005em); }
+body.round-1 .inner-nameplate { filter: blur(.1px) }
+body.round-1 .position { filter: blur(.05px) drop-shadow(1px 1px 0 #111); }
+body.round-1 .random-fact { filter: blur(0.1px); }
+
+/* First round cards get gold leaf lettering */
+body.round-1 .inner-nameplate {
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 1px RGBA(255, 255, 255, 0.75);
+    -moz-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-stroke: 1px RGBA(255, 255, 255, 0.75);
+    letter-spacing: 0;
+}
+
+/* Stats */
+.stats {
+    position: absolute;
+    left: 55.5%;
+    right: 6%;
+    top: 62.5%;
+    bottom: 11.5%;
+    z-index: 3;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.99);
+    font-family: "Industry Book";
+    font-size: 120%;
+	text-transform: uppercase;
+	color: #fff;
+    filter: blur(.15px);
+}
+.stats-contain {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 16px 0 0;
+}
+.team-logo {
+    z-index: 10;
+}
+.stat {
+	box-sizing: border-box;
+    display: flex;
+	flex-grow: 1;
+	align-items: center;
+	justify-content: space-around;
+    width: 50%;
+	padding: 0 20px;
+	margin-bottom: 20px;
+	letter-spacing: .05em;
+    text-align: center;
+}
+.stat .header {
+	font-weight: bold;
+	padding-right: 10px;
+}
+.stat .spacer {
+	display: block;
+	flex-grow: 2;
+	width: auto;
+	height: 2px;
+	border-top: #fff dashed 2px;
+	opacity: .6;
+}
+.stat .number {
+	padding-left: 10px;
+}
