@@ -145,10 +145,10 @@ body.round-1 .inner-nameplate {
 /* Stats */
 .stats {
     position: absolute;
-    left: 55.5%;
-    right: 6%;
-    top: 62.5%;
-    bottom: 11.5%;
+    left: 55.2%;
+    right: 5.5%;
+    top: 63.3%;
+    bottom: 11.0%;
     z-index: 3;
     overflow: hidden;
     color: rgba(255, 255, 255, 0.99);
@@ -161,7 +161,7 @@ body.round-1 .inner-nameplate {
 .stats-contain {
 	display: flex;
 	flex-wrap: wrap;
-	padding: 16px 0 0;
+	margin: 3% 0 0;
 }
 .team-logo {
     z-index: 10;
