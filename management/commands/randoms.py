@@ -16,6 +16,6 @@ class Command(BaseCommand):
                 continue
 
             t = teams[i % len(teams)]
-            o = random.randint(1, 255)
+            o = random.randint(1, 259)
             url = reverse('player-card', kwargs={'overall': o, 'team': t, 'pos':p.position, 'name':p.name, 'college':p.college, 'fmt':'png'})
             self.stdout.write(url)
