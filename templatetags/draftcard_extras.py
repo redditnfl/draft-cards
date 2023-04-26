@@ -346,6 +346,10 @@ def add_stats(input_value, position):
 def get_key(input_value, key):
     return input_value.get(key, '')
 
+@register.filter
+def mod(input_value, val):
+    return int(input_value) % int(val)
+
 
 if __name__ == "__main__":
     import doctest

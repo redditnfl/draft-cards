@@ -64,12 +64,12 @@
             font-weight: 200;
         }
 
-        body.round-1 .inner-nameplate {
-            background-image: url("{% static "draftcardposter/draft-2023/assets/img/goldleaf.jpg" %}");
-            background-size: cover;
-        }
-
-        .card-base { background-image: url("{% static 'draftcardposter/draft-2023/assets/img/base.png' %}"); }
+        {% with overall|mod:7|add:1|stringformat:"d" as gradient %}
+        {% with 'draftcardposter/draft-2023/assets/img/gradient'|add:gradient|add:'.png' as card_base %}
+        .card-base { background-image: url("{% static card_base %}"); }
+        {% endwith %}
+        {% endwith %}
+        .shiny .card-base { background-image: url("{% static 'draftcardposter/draft-2023/assets/img/shiny.png' %}"); }
 
         {% for short, team in teams %}
         {% with 'draftcardposter/draft-2023/assets/img/logo-overlay/'|add:team.short|add:'.png' as logo %}
@@ -81,7 +81,7 @@
     <link rel="stylesheet" href="{% static 'draftcardposter/draft-2023/assets/css/styles.css' %}"/>
 
   </head>
-  <body class="team-{{ team.short|upper }} round-{{ round }}" data-overall="{{ overall }}">
+  <body class="team-{{ team.short|upper }} round-{{ round }} {{ extraclass }} shiny" data-overall="{{ overall }}">
 	  <div class="card">
           <div class="nameplate">
               <div class="inner-nameplate">{{ firstname|upper }} {{ lastname|upper }}</div>
