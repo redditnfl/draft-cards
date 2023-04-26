@@ -70,6 +70,7 @@
         {% endwith %}
         {% endwith %}
         .shiny .card-base { background-image: url("{% static 'draftcardposter/draft-2023/assets/img/shiny.png' %}"); }
+        .mrirrelevant .card-base { background-image: url("{% static 'draftcardposter/draft-2023/assets/img/mrirrelevant.png' %}"); }
 
         {% for short, team in teams %}
         {% with 'draftcardposter/draft-2023/assets/img/logo-overlay/'|add:team.short|add:'.png' as logo %}
@@ -81,7 +82,7 @@
     <link rel="stylesheet" href="{% static 'draftcardposter/draft-2023/assets/css/styles.css' %}"/>
 
   </head>
-  <body class="team-{{ team.short|upper }} round-{{ round }} {{ extraclass }}" data-overall="{{ overall }}">
+  <body class="team-{{ team.short|upper }} round-{{ round }} {{ extraclass }} {% if overall == last_pick %}mrirrelevant{% endif %}" data-overall="{{ overall }}">
 	  <div class="card">
           <div class="nameplate">
               <div class="inner-nameplate">{{ firstname|upper }} {{ lastname|upper }}</div>
@@ -99,6 +100,11 @@
           {% if hasphoto %}
           <div class="player" style="background-image: url('{% static photo %}')"></div>
           <div class="player effect" style="background-image: url('{% static photo %}')"></div>
+          {% elif round == 7 %}
+          {% with 'draftcardposter/draft-2023/assets/img/missing/tpose.png' as missingno %}
+          <div class="player" style="background-image: url('{% static missingno %}')"></div>
+          <div class="player effect" style="background-image: url('{% static missingno %}')"></div>
+          {% endwith %}
           {% else %}
           {% with 'draftcardposter/draft-2023/assets/img/missing/'|add:position|add:'.png' as missingno %}
           <div class="player" style="background-image: url('{% static missingno %}')"></div>

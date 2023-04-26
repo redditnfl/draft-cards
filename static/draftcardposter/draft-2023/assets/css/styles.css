@@ -193,3 +193,7 @@ body.round-1 .inner-nameplate {
 .stat .number {
 	padding-left: 10px;
 }
+.mrirrelevant .random-fact { display: none; }
+.mrirrelevant .team-logo, .mrirrelevant .player {
+    filter: grayscale(100%);
+}

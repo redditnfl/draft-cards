@@ -432,9 +432,9 @@ class PlayerCard(View):
                     'p': player,
                     'position': pos,
                     'position_long': dict(Player.POSITIONS)[pos],
-                    'overall': overall,
-                    'round': round_,
-                    'pick': pick,
+                    'overall': int(overall),
+                    'round': int(round_),
+                    'pick': int(pick),
                     'name': name,
                     'firstname': firstname,
                     'lastname': lastname,
@@ -443,7 +443,8 @@ class PlayerCard(View):
                     'stats': stats,
                     'misprint': misprint,
                     'priorities': Priority.objects.get(position=pos).merge_with(Priority.objects.get(position='Default')),
-                    'teams': sorted(filter(lambda v: v[1]['short'] not in ('AFC', 'NFC'), nflteams.fullinfo.items()), key=lambda v: v[1]['mascot'])
+                    'teams': sorted(filter(lambda v: v[1]['short'] not in ('AFC', 'NFC'), nflteams.fullinfo.items()), key=lambda v: v[1]['mascot']),
+                    'last_pick': sum([sum([1 for pick in rd if pick[1] not in (draft.FORFEITED, draft.MOVED)]) for rd in draft.drafts[settings.draft_year]])
                     }
             playerimgs = 'draftcardposter/' + settings.layout + '/playerimgs'
             context['photo'] = playerimgs + '/missingno.jpg'
