@@ -447,10 +447,12 @@ class PlayerCard(View):
                     }
             playerimgs = 'draftcardposter/' + settings.layout + '/playerimgs'
             context['photo'] = playerimgs + '/missingno.jpg'
+            context['hasphoto'] = False
             if player and 'filename' in player.data:
                 photo = playerimgs + '/' + player.data['filename'] + '.jpg'
                 if finders.find(photo):
                     context['photo'] = photo
+                    context['hasphoto'] = True
 
             return render(request, 'draftcardposter/layout/' + settings.layout + '.html', context=context)
 
